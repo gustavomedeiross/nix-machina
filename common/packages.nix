@@ -6,6 +6,7 @@ with pkgs; [
   coreutils
   docker
   docker-compose
+  emacs
   fzf
   gcc
   gh # github
