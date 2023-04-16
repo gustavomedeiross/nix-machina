@@ -21,7 +21,7 @@ let
 	  cleanup = "zap";
 	  upgrade = true;
   };
-  homebrew.brewPrefix = "/usr/local/bin";
+  homebrew.brewPrefix = "/opt/homebrew/bin";
   homebrew.casks = pkgs.callPackage ./casks.nix {};
   homebrew.masApps = {
     "1password" = 1333542190;
