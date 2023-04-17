@@ -23,8 +23,6 @@
   # Turn off NIX_PATH warnings now that we're using flakes
   system.checks.verifyNixPath = false;
 
-  environment.systemPackages = with pkgs; [] ++ (import ../common/packages.nix { pkgs = pkgs; });
-
   programs = { };
 
   # Remove once this is done: https://github.com/nix-community/home-manager/issues/1341
