@@ -22,7 +22,6 @@ with pkgs; [
   python39
   python39Packages.virtualenv
   ripgrep
-  slack
   tmux
   unrar
   unzip
