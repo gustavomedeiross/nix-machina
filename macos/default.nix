@@ -17,6 +17,10 @@
     # Turn this on to make command line easier
     extraOptions = ''
       experimental-features = nix-command flakes
+
+      # Required by nix-direnv
+      keep-outputs = true
+      keep-derivations = true
     '';
   };
 
