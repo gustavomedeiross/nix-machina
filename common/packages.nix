@@ -19,8 +19,6 @@ with pkgs; [
   nodejs
   openssh
   pandoc
-  python39
-  python39Packages.virtualenv
   ripgrep
   tmux
   unrar
