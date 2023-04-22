@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  zsh = {
+  programs.zsh = {
     enable = true;
     autocd = true;
     dotDir = ".config/zsh";
@@ -78,7 +78,7 @@
     ];
   };
 
-  fzf = {
+  programs.fzf = {
     enable = true;
     enableZshIntegration = true;
   };

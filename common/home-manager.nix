@@ -5,6 +5,8 @@ let
 in
 
 shell // {
-  direnv.enable = true;
-  direnv.nix-direnv.enable = true;
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }

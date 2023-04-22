@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  common-programs = import ../common/home-manager.nix { config = config; pkgs = pkgs; lib = lib; };
+  common-hm-config = import ../common/home-manager.nix { config = config; pkgs = pkgs; lib = lib; };
 in
 {
   imports = [
@@ -31,8 +31,8 @@ in
 
   home-manager = {
     useGlobalPkgs = true;
-    users.gustavo = { pkgs, lib, ... }: {
-      programs = common-programs // {};
+    users.gustavo = { pkgs, lib, ... }: common-hm-config // {
+      programs = {};
       home.enableNixpkgsReleaseCheck = false;
       home.packages = pkgs.callPackage ./packages.nix {};
       home.stateVersion = "22.11";
