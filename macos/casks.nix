@@ -6,5 +6,6 @@
   "discord"
   "homebrew/cask/docker"
   "slack"
+  "spotify"
   "zoom"
 ]
