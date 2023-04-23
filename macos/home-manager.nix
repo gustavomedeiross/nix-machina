@@ -31,7 +31,7 @@ in
 
   home-manager = {
     useGlobalPkgs = true;
-    users.gustavo = { pkgs, lib, ... }: common-hm-config // {
+    users.gustavo = { pkgs, lib, ... }: lib.recursiveUpdate common-hm-config {
       programs = {};
       home.enableNixpkgsReleaseCheck = false;
       home.packages = pkgs.callPackage ./packages.nix {};
