@@ -19,6 +19,7 @@ with pkgs; [
   nodejs
   openssh
   pandoc
+  postgresql
   ripgrep
   tmux
   unrar
