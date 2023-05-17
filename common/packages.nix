@@ -4,6 +4,7 @@ with pkgs; [
   alacritty
   awscli2
   coreutils
+  devenv
   docker
   docker-compose
   emacs
