@@ -37,6 +37,13 @@ in
       home.packages = pkgs.callPackage ./packages.nix {};
       home.stateVersion = "22.11";
 
+      targets.darwin.keybindings = {
+        "^&#xF702;" = "moveWordLeft:";
+        "^&#xF703;" = "moveWordRight:";
+        "^$&#xF702;" = "moveWordLeftAndModifySelection:";
+        "^$&#xF703;" = "moveWordRightAndModifySelection:";
+      };
+
       # Remove once this is done: https://github.com/nix-community/home-manager/issues/1341
 
       # This is only required because we're linking manually
