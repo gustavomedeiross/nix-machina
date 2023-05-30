@@ -7,5 +7,6 @@
   "homebrew/cask/docker"
   "slack"
   "spotify"
+  "unnaturalscrollwheels"
   "zoom"
 ]
