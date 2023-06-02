@@ -25,6 +25,7 @@ with pkgs; [
   tmux
   unrar
   unzip
+  vscode
   wget
   zip
 ]
