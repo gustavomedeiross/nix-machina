@@ -2,7 +2,7 @@
 
 with pkgs; [
   alacritty
-  awscli2
+  aws-vault
   coreutils
   devenv
   docker
