@@ -26,7 +26,6 @@ in
   homebrew.casks = pkgs.callPackage ./casks.nix {};
   homebrew.masApps = {
     "1password" = 1333542190;
-    "tailscale" = 1475387142;
   };
 
   home-manager = {

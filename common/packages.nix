@@ -22,6 +22,7 @@ with pkgs; [
   pandoc
   postgresql
   ripgrep
+  tailscale
   tmux
   unrar
   unzip
