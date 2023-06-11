@@ -3,10 +3,10 @@
 [
   "appcleaner"
   "brave-browser"
-  "basictex"
   "discord"
   "homebrew/cask/docker"
   "insomnia"
+  "mactex"
   "slack"
   "spotify"
   "unnaturalscrollwheels"
