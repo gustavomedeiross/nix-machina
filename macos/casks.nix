@@ -3,6 +3,7 @@
 [
   "appcleaner"
   "brave-browser"
+  "basictex"
   "discord"
   "homebrew/cask/docker"
   "insomnia"
