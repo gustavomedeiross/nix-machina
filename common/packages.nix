@@ -3,6 +3,7 @@
 with pkgs; [
   alacritty
   aws-vault
+  chamber
   coreutils
   devenv
   docker
