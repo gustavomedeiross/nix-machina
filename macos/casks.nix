@@ -1,7 +1,6 @@
 { ... }:
 
 [
-  "aldente"
   "appcleaner"
   "brave-browser"
   "discord"
