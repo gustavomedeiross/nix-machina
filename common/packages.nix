@@ -13,6 +13,7 @@ with pkgs; [
   gcc
   gh # github
   google-cloud-sdk
+  haproxy
   home-manager
   htop
   jq

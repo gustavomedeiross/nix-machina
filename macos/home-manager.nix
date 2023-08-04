@@ -24,9 +24,7 @@ in
   };
   homebrew.brewPrefix = "/opt/homebrew/bin";
   homebrew.casks = pkgs.callPackage ./casks.nix {};
-  homebrew.masApps = {
-    "1password" = 1333542190;
-  };
+  homebrew.masApps = {};
 
   home-manager = {
     useGlobalPkgs = true;
