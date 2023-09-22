@@ -18,7 +18,7 @@ with pkgs; [
   home-manager
   htop
   jq
-
+  libgccjit
   nodePackages.npm
   nodejs
   openssh
