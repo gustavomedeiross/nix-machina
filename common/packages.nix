@@ -9,6 +9,7 @@ with pkgs; [
   docker
   docker-compose
   emacs
+  fira-code
   fzf
   gcc
   gh # github
