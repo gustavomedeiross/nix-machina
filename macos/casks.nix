@@ -5,6 +5,7 @@
   "appcleaner"
   "brave-browser"
   "discord"
+  "emacs"
   "homebrew/cask/docker"
   "insomnia"
   "mactex"

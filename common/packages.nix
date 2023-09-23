@@ -8,7 +8,6 @@ with pkgs; [
   devenv
   docker
   docker-compose
-  emacs
   fira-code
   fzf
   gcc
