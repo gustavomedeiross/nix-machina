@@ -31,5 +31,6 @@ with pkgs; [
   vscode
   wget
   wireguard-tools
+  wireguard-go
   zip
 ]
