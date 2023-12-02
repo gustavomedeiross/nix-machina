@@ -18,6 +18,7 @@ with pkgs; [
   htop
   jq
   libgccjit
+  lilypond
   nodePackages.npm
   nodejs
   openssh
