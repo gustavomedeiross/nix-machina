@@ -4,6 +4,7 @@ with pkgs; [
   alacritty
   aws-vault
   chamber
+  cmake
   coreutils
   devenv
   docker
