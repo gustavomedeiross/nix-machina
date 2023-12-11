@@ -19,6 +19,7 @@ with pkgs; [
   htop
   jq
   libgccjit
+  libtool
   lilypond-with-fonts
   nodePackages.npm
   nodejs
