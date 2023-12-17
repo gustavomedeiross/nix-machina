@@ -20,7 +20,6 @@ with pkgs; [
   jq
   libgccjit
   libtool
-  lilypond-with-fonts
   nodePackages.npm
   nodejs
   openssh
