@@ -9,7 +9,6 @@
   "emacs"
   "homebrew/cask/docker"
   "insomnia"
-  "mactex"
   "postman"
   "slack"
   "spotify"

@@ -23,7 +23,7 @@ in
 	  upgrade = true;
   };
   homebrew.brewPrefix = "/opt/homebrew/bin";
-  homebrew.brews = [ "lilypond" "pulumi/tap/pulumi" ];
+  homebrew.brews = [ "lilypond" "pulumi" ];
   homebrew.casks = pkgs.callPackage ./casks.nix {};
   homebrew.masApps = {};
 
