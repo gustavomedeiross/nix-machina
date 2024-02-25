@@ -3,6 +3,7 @@
 [
   "1password"
   "appcleaner"
+  "basictex"
   "brave-browser"
   "discord"
   "dropbox"
