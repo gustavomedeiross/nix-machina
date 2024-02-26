@@ -227,6 +227,7 @@
     "o c" '(org-capture :which-key "Org capture")
     "o q" '(org-set-tags-command :which-key "Org set tags")
     "o s" '(org-schedule :which-key "Org schedule")
+    "o p" '(org-priority :which-key "Org priority")
 
     ;; Project
     "p f" '(consult-find :which-key "Run a fuzzy find against project files")
