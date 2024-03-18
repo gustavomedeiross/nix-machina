@@ -90,11 +90,26 @@
 
 (use-package git-link)
 
-(defun gm/org-font-setup ()
+(use-package org
+  :hook (org-mode . (lambda ()
+                      (org-indent-mode)
+                      (visual-line-mode 1)))
+  :config
+  (setq org-ellipsis " ▾")
+
   ;; Replace list hyphen with dot
   (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+  ;; Change the size of org headings.
+  (custom-set-faces
+   '(org-document-title ((t (:inherit outline-1 :height 1.4))))
+   '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+   '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
+   '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+   '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+   '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -105,13 +120,6 @@
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
-(use-package org
-  :hook (org-mode . (lambda ()
-                      (org-indent-mode)
-                      (visual-line-mode 1)))
-  :config
-  (setq org-ellipsis " ▾")
-  (gm/org-font-setup)
 
   ;; TODO keywords.
   (setq org-todo-keywords
@@ -120,7 +128,7 @@
         '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
            "* TODO %?\n  %i\n  %a")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
-           "* %?\nEntered on %U\n  %i\n  %a"))))
+           "* %?\nEntered on %U\n  %i\n  %a")))
 
 (use-package org-agenda
   :ensure nil
