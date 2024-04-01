@@ -17,6 +17,7 @@ with pkgs; [
   haproxy
   home-manager
   htop
+  imagemagick
   jq
   libgccjit
   libtool
