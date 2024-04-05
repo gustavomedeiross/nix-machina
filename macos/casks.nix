@@ -3,6 +3,7 @@
 [
   "1password"
   "appcleaner"
+  "balenaetcher"
   "brave-browser"
   "discord"
   "dropbox"
