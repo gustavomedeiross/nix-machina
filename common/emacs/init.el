@@ -284,6 +284,7 @@
     "o s" '(org-schedule :which-key "Org schedule")
     "o p" '(org-priority :which-key "Org priority")
     "o i" '(org-toggle-inline-images :which-key "Org image show")
+    "o o" '(org-open-at-point :which-key "Org open link at point")
 
     ;; Org Roam
     "o r l" '(org-roam-buffer-toggle :which-key "Org-Roam buffer toggle")
