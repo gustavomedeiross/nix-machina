@@ -286,11 +286,11 @@
     "o i" '(org-toggle-inline-images :which-key "Org image show")
 
     ;; Org Roam
-    "r l" '(org-roam-buffer-toggle :which-key "Org-Roam buffer toggle")
-    "r f" '(org-roam-node-find :which-key "Org-Roam find node")
-    "r i" '(org-roam-node-insert :which-key "Org-Roam insert node")
-    "r c" '(org-roam-capture :which-key "Org-Roam capture")
-    "r g" '(org-roam-graph :which-key "Org-Roam show graph")
+    "o r l" '(org-roam-buffer-toggle :which-key "Org-Roam buffer toggle")
+    "o r f" '(org-roam-node-find :which-key "Org-Roam find node")
+    "o r i" '(org-roam-node-insert :which-key "Org-Roam insert node")
+    "o r c" '(org-roam-capture :which-key "Org-Roam capture")
+    "o r g" '(org-roam-graph :which-key "Org-Roam show graph")
 
     ;; Project
     "p f" '(consult-find :which-key "Run a fuzzy find against project files")
