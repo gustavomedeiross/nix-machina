@@ -118,8 +118,7 @@
   (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
-
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 
   ;; TODO keywords.
   (setq org-todo-keywords
@@ -128,7 +127,9 @@
         '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
            "* TODO %?\n  %i\n  %a")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
-           "* %?\nEntered on %U\n  %i\n  %a")))
+           "* %?\nEntered on %U\n  %i\n  %a")
+          ("s" "Slipbox" entry  (file "~/org/slipbox.org")
+           "* %?\n"))))
 
 (use-package org-agenda
   :ensure nil
@@ -162,6 +163,52 @@
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(defun gm/tag-new-node-as-draft ()
+  (org-roam-tag-add '("draft")))
+
+(use-package org-roam
+  :custom
+  (org-roam-directory "~/org/roam")
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-insert)
+         ("C-c n g" . org-roam-graph))
+  :hook
+  (org-roam-capture-new-node . gm/tag-new-node-as-draft)
+  :config
+  (org-roam-db-autosync-mode)
+  (org-roam-setup)
+
+  (setq org-roam-capture-templates
+        '(("m" "main" plain
+           "%?"
+           :if-new (file+head "main/${slug}.org"
+                              "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("r" "reference" plain "%?"
+           :if-new
+           (file+head "reference/${title}.org" "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("a" "article" plain "%?"
+           :if-new
+           (file+head "articles/${title}.org" "#+title: ${title}\n#+filetags: :article:\n")
+           :immediate-finish t
+           :unnarrowed t)))
+
+  (cl-defmethod org-roam-node-type ((node org-roam-node))
+    "Return the TYPE of NODE."
+    (condition-case nil
+        (file-name-nondirectory
+         (directory-file-name
+          (file-name-directory
+           (file-relative-name (org-roam-node-file node) org-roam-directory))))
+      (error "")))
+
+  (setq org-roam-node-display-template
+        (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag))))
 
 (use-package tex-site
   :straight (auctex :host github
@@ -237,6 +284,13 @@
     "o s" '(org-schedule :which-key "Org schedule")
     "o p" '(org-priority :which-key "Org priority")
     "o i" '(org-toggle-inline-images :which-key "Org image show")
+
+    ;; Org Roam
+    "r l" '(org-roam-buffer-toggle :which-key "Org-Roam buffer toggle")
+    "r f" '(org-roam-node-find :which-key "Org-Roam find node")
+    "r i" '(org-roam-node-insert :which-key "Org-Roam insert node")
+    "r c" '(org-roam-capture :which-key "Org-Roam capture")
+    "r g" '(org-roam-graph :which-key "Org-Roam show graph")
 
     ;; Project
     "p f" '(consult-find :which-key "Run a fuzzy find against project files")

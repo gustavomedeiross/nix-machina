@@ -14,6 +14,7 @@ with pkgs; [
   gcc
   gh # github
   google-cloud-sdk
+  graphviz
   haproxy
   home-manager
   htop
