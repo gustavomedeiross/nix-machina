@@ -16,4 +16,5 @@
   "spotify"
   "unnaturalscrollwheels"
   "zoom"
+  "zotero"
 ]
