@@ -285,13 +285,14 @@
     "o p" '(org-priority :which-key "Org priority")
     "o i" '(org-toggle-inline-images :which-key "Org image show")
     "o o" '(org-open-at-point :which-key "Org open link at point")
+    "o b" '(org-cite-insert :which-key "Org biblio cite insert")
 
-    ;; Org Roam
-    "o r l" '(org-roam-buffer-toggle :which-key "Org-Roam buffer toggle")
-    "o r f" '(org-roam-node-find :which-key "Org-Roam find node")
-    "o r i" '(org-roam-node-insert :which-key "Org-Roam insert node")
-    "o r c" '(org-roam-capture :which-key "Org-Roam capture")
-    "o r g" '(org-roam-graph :which-key "Org-Roam show graph")
+    ;; Org Roam (Zettelkasten)
+    "z l" '(org-roam-buffer-toggle :which-key "Zettel buffer toggle")
+    "z f" '(org-roam-node-find :which-key "Find zettel")
+    "z i" '(org-roam-node-insert :which-key "Insert zettel at point")
+    "z c" '(org-roam-capture :which-key "New/capture zettel (capture)")
+    "z g" '(org-roam-graph :which-key "Zettel graph")
 
     ;; Project
     "p f" '(consult-find :which-key "Run a fuzzy find against project files")
@@ -498,6 +499,17 @@
                :host github
                :repo "bbatsov/persp-projectile")
     :commands (projectile-persp-switch-project))
+
+;; Citations
+
+(use-package citar
+  :no-require
+  :custom
+  (org-cite-global-bibliography '("~/org/roam/biblio.bib"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
 
 ;; LSP & Auto-completion
 
