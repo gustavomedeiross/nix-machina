@@ -164,9 +164,6 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(defun gm/tag-new-node-as-draft ()
-  (org-roam-tag-add '("draft")))
-
 (use-package org-roam
   :custom
   (org-roam-directory "~/org/roam")
@@ -208,7 +205,46 @@
       (error "")))
 
   (setq org-roam-node-display-template
-        (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag))))
+        (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+
+  (defun gm/tag-new-node-as-draft ()
+    (org-roam-tag-add '("draft"))))
+
+(use-package citar
+  :custom
+  (org-cite-global-bibliography '("~/org/roam/biblio.bib"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
+
+(use-package citar-org-roam
+  :after citar org-roam
+  :demand t
+  :config
+  (citar-org-roam-mode 1))
+
+;; From: jethrokuan.github.io/org-roam-guide/
+(defun gm/org-roam-node-from-cite (entry-key)
+    "Creates a zettel from a bibliography reference."
+    (interactive (list (citar-select-ref)))
+    (let ((title (citar-format--entry
+                  "${author editor} :: ${title}"
+                  (citar-get-entry entry-key))))
+      (org-roam-capture- :templates
+                         `(("r" "reference" plain
+                            "%?"
+                            :if-new (file+head "references/${citekey}.org"
+                                     ,(concat
+                                       ":PROPERTIES:\n"
+                                       ":ROAM_REFS: [cite:@${citekey}]\n"
+                                       ":END:\n"
+                                       "#+title: ${title}\n"))
+                            :immediate-finish t
+                            :unnarrowed t))
+                         :info (list :citekey entry-key)
+                         :node (org-roam-node-create :title title)
+                         :props '(:finalize find-file))))
 
 (use-package tex-site
   :straight (auctex :host github
@@ -499,17 +535,6 @@
                :host github
                :repo "bbatsov/persp-projectile")
     :commands (projectile-persp-switch-project))
-
-;; Citations
-
-(use-package citar
-  :no-require
-  :custom
-  (org-cite-global-bibliography '("~/org/roam/biblio.bib"))
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  (citar-bibliography org-cite-global-bibliography))
 
 ;; LSP & Auto-completion
 
