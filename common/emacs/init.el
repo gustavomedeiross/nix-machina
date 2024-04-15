@@ -211,40 +211,43 @@
     (org-roam-tag-add '("draft"))))
 
 (use-package citar
+  :demand t
   :custom
   (org-cite-global-bibliography '("~/org/roam/biblio.bib"))
+  (citar-bibliography org-cite-global-bibliography)
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  (citar-bibliography org-cite-global-bibliography))
+  (org-cite-activate-processor 'citar))
 
 (use-package citar-org-roam
   :after citar org-roam
   :demand t
-  :config
-  (citar-org-roam-mode 1))
+  :custom
+  (citar-org-roam-mode t)
+  (setq citar-org-roam-note-title-template "${author} - ${title}")
+  (setq citar-org-roam-subdir "reference"))
 
 ;; From: jethrokuan.github.io/org-roam-guide/
 (defun gm/org-roam-node-from-cite (entry-key)
-    "Creates a zettel from a bibliography reference."
-    (interactive (list (citar-select-ref)))
-    (let ((title (citar-format--entry
-                  "${author editor} :: ${title}"
-                  (citar-get-entry entry-key))))
-      (org-roam-capture- :templates
-                         `(("r" "reference" plain
-                            "%?"
-                            :if-new (file+head "reference/${citekey}.org"
-                                     ,(concat
-                                       ":PROPERTIES:\n"
-                                       ":ROAM_REFS: [cite:@${citekey}]\n"
-                                       ":END:\n"
-                                       "#+title: ${title}\n"))
-                            :immediate-finish t
-                            :unnarrowed t))
-                         :info (list :citekey entry-key)
-                         :node (org-roam-node-create :title title)
-                         :props '(:finalize find-file))))
+  "Create an Org-Roam node from a bibliography reference."
+  (interactive (list (citar-select-ref)))
+  (let ((title (citar-format--entry
+                "${author editor} (${date urldate}) :: ${title}"
+                (citar-get-entry entry-key))))
+    (org-roam-capture- :templates
+                       `(("r" "reference" plain
+                          "%?"
+                          :if-new (file+head "reference/${citekey}.org"
+                                             ,(concat
+                                               ":PROPERTIES:\n"
+                                               ":ROAM_REFS: @${citekey}\n"
+                                               ":END:\n"
+                                               "#+title: ${title}\n"))
+                          :immediate-finish t
+                          :unnarrowed t))
+                       :info (list :citekey entry-key)
+                       :node (org-roam-node-create :title title)
+                       :props '(:finalize find-file))))
 
 (use-package tex-site
   :straight (auctex :host github
@@ -327,7 +330,7 @@
     "z l" '(org-roam-buffer-toggle :which-key "Zettel buffer toggle")
     "z f" '(org-roam-node-find :which-key "Find zettel")
     "z i" '(org-roam-node-insert :which-key "Insert zettel at point")
-    "z c" '(org-roam-capture :which-key "New/capture zettel (capture)")
+    "z c" '(org-roam-capture :which-key "Zettel capture")
     "z g" '(org-roam-graph :which-key "Zettel graph")
 
     ;; Project
