@@ -234,7 +234,7 @@
       (org-roam-capture- :templates
                          `(("r" "reference" plain
                             "%?"
-                            :if-new (file+head "references/${citekey}.org"
+                            :if-new (file+head "reference/${citekey}.org"
                                      ,(concat
                                        ":PROPERTIES:\n"
                                        ":ROAM_REFS: [cite:@${citekey}]\n"
