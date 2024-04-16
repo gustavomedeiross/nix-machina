@@ -240,7 +240,7 @@
                           :if-new (file+head "reference/${citekey}.org"
                                              ,(concat
                                                ":PROPERTIES:\n"
-                                               ":ROAM_REFS: @${citekey}\n"
+                                               ":ROAM_REFS: [cite:@${citekey}]\n"
                                                ":END:\n"
                                                "#+title: ${title}\n"))
                           :immediate-finish t
