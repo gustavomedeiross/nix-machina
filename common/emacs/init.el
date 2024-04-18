@@ -232,7 +232,7 @@
   "Create an Org-Roam node from a bibliography reference."
   (interactive (list (citar-select-ref)))
   (let ((title (citar-format--entry
-                "${author editor} (${date urldate}) :: ${title}"
+                "${author editor} - ${title}"
                 (citar-get-entry entry-key))))
     (org-roam-capture- :templates
                        `(("r" "reference" plain
