@@ -46,7 +46,7 @@
       `((".*" ,user-temporary-file-directory t)))
 
 ;; Copy current file path and line number to clipboard
-(defun copy-current-line-position-to-clipboard ()
+(defun gm/copy-current-line-position-to-clipboard ()
     "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
     (interactive)
     (let* ((project-path (projectile-project-root))
@@ -249,6 +249,13 @@
                        :node (org-roam-node-create :title title)
                        :props '(:finalize find-file))))
 
+(use-package ox-slack)
+
+(defun gm/org-export-slack-to-clipboard ()
+  "Exports org-mode text to be pasted in Slack"
+  (interactive)
+  (org-slack-export-to-clipboard-as-slack))
+
 (use-package tex-site
   :straight (auctex :host github
                     :repo "emacsmirror/auctex"
@@ -338,6 +345,7 @@
     "p s" '(consult-ripgrep :which-key "Run ripgrep against project files")
     "p p" '(projectile-persp-switch-project :which-key "Switch to project in a new perspective")
     "p e" '(project-eshell :which-key "Open a new eshell instance in the project directory")
+    "p c" '(projectile-add-known-project :which-key "Creates a new project")
 
     ;; Workspaces
     "TAB ," '(persp-switch :which-key "Switch to a workspace")
@@ -380,11 +388,8 @@
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
   (setq dashboard-page-separator "\n\n")
-  (setq dashboard-items '((recents  . 5)
-                          (bookmarks . 5)
-                          (projects . 5)
-                          (agenda . 5)
-                          (registers . 5)))
+  (setq dashboard-items '((bookmarks . 5)
+                          (projects . 5)))
   (setq dashboard-heading-icons '((recents   . "history")
                                     (bookmarks . "bookmark")
                                     (agenda    . "calendar")
@@ -531,7 +536,8 @@
   :config (projectile-mode)
   :init
   ;; When switching to a new project, magit-status if the project is a git repo, otherwise dired
-  (setq projectile-switch-project-action #'magit-status))
+  (setq projectile-switch-project-action #'magit-status)
+  (setq projectile-track-known-projects-automatically nil))
 
 (use-package persp-projectile
     :straight (persp-projectile
@@ -634,9 +640,10 @@
 
 ;; Copilot
 (use-package copilot
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :init
-  (add-hook 'prog-mode-hook 'copilot-mode)
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
+  ;; Disable copilot-mode by default for now
+  ;; :init
+  ;; (add-hook 'prog-mode-hook 'copilot-mode)
   :config
   (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
   (define-key copilot-completion-map (kbd "C-RET") 'copilot-accept-completion))
