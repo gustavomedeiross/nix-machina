@@ -388,6 +388,12 @@
   :config
   (load-theme 'doom-gruvbox t))
 
+(use-package zoom
+  :config
+  (zoom-mode t)
+  :custom
+  (zoom-size '(0.618 . 0.618)))
+
 ;; Evil Mode
 
 (use-package evil
