@@ -8,7 +8,6 @@
   "calibre"
   "discord"
   "dropbox"
-  "emacs"
   "homebrew/cask/docker"
   "insomnia"
   "linear-linear"

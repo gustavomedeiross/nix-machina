@@ -1,5 +1,8 @@
 { pkgs }:
 
+let
+  emacs = import ./emacs.nix { inherit pkgs; };
+in
 with pkgs; [
   alacritty
   aws-vault
@@ -9,6 +12,7 @@ with pkgs; [
   devenv
   docker
   docker-compose
+  emacs
   fira-code
   fzf
   gcc

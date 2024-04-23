@@ -8,9 +8,9 @@
     nix-direnv.enable = true;
   };
 
+  # TODO: find out a cleaner way to do that
   home.file = {
     ".emacs.d/early-init.el".source = ./emacs/early-init.el;
-    ".emacs.d/init.el".source = ./emacs/init.el;
     ".emacs.d/site-lisp/lilypond-font-lock.el".source = ./emacs/site-lisp/lilypond-font-lock.el;
     ".emacs.d/site-lisp/lilypond-indent.el".source = ./emacs/site-lisp/lilypond-indent.el;
     ".emacs.d/site-lisp/lilypond-init.el".source = ./emacs/site-lisp/lilypond-init.el;

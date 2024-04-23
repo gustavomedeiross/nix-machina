@@ -1,3 +1,39 @@
+;; Activate use-package and the things it needs.
+;; use-package is installed by emacs.nix,
+;; and the other two libs are bundled with emacs.
+(require 'use-package)
+(require 'diminish)
+(require 'bind-key)
+(require 'general)
+
+;; TODO: add more things here
+(use-package emacs
+  :custom
+  (display-buffer-alist
+   '(("\\*haskell\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . -1))))
+  :general
+  (general-define-key
+    :states 'normal
+    :keymaps '(normal visual emacs override)
+    :prefix "SPC"
+      "," '(switch-to-buffer :which-key "Switch to buffer")
+      "." '(find-file :which-key "Find file")
+
+      "w h" '(windmove-left :which-key "Move to left window")
+      "w j" '(windmove-down :which-key "Move to lower window")
+      "w k" '(windmove-up :which-key "Move to upper window")
+      "w l" '(windmove-right :which-key "Move to right window")
+
+      "b k" '(kill-buffer :which-key "Kill buffer")
+      "b r" '(rename-buffer :which-key "Rename buffer"))
+  (general-define-key
+   :keymaps '(normal visual)
+   "C-/" '(comment-or-uncomment-region :which-key "Comment or uncomment region")))
+
 (setq inhibit-startup-message t) ; Remove welcome screen
 (setq make-backup-files nil) ; Disable backup~ files
 (setq create-lockfiles nil) ; Disable .#lock files
@@ -63,25 +99,6 @@
 
 (setq custom-file (concat user-emacs-directory "/custom.el"))
 
-;; straight.el
-
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-;; Replace use-package with straight-use-package
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
-
 ;; Package specifics
 
 (use-package string-inflection)
@@ -129,15 +146,28 @@
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "* %?\nEntered on %U\n  %i\n  %a")
           ("s" "Slipbox" entry  (file "~/org/slipbox.org")
-           "* %?\n"))))
+           "* %?\n")))
+  :general
+  (general-define-key
+    :states 'normal
+    :keymaps '(normal visual emacs override)
+    :prefix "SPC"
+    "o t" '(org-todo :which-key "Org TODO")
+    "o a" '(org-agenda :which-key "Org agenda")
+    "o c" '(org-capture :which-key "Org capture")
+    "o q" '(org-set-tags-command :which-key "Org set tags")
+    "o s" '(org-schedule :which-key "Org schedule")
+    "o p" '(org-priority :which-key "Org priority")
+    "o i" '(org-toggle-inline-images :which-key "Org image show")
+    "o o" '(org-open-at-point :which-key "Org open link at point")
+    "o b" '(org-cite-insert :which-key "Org biblio cite insert")))
 
 (use-package org-agenda
   :ensure nil
-  :straight nil
-  :bind
-  (:map org-agenda-mode-map
-        ("j" . evil-next-line)
-        ("k" . evil-previous-line))
+  :after (org evil)
+  :bind (:map org-agenda-mode-map
+              ("j" . evil-next-line)
+              ("k" . evil-previous-line))
   :config
   (setq org-agenda-files '("~/org/tasks.org"))
   ;; Show the daily agenda by default.
@@ -167,10 +197,16 @@
 (use-package org-roam
   :custom
   (org-roam-directory "~/org/roam")
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-insert)
-         ("C-c n g" . org-roam-graph))
+  :general
+  (general-define-key
+    :states 'normal
+    :keymaps '(normal visual emacs override)
+    :prefix "SPC"
+    "z l" '(org-roam-buffer-toggle :which-key "Zettel buffer toggle")
+    "z f" '(org-roam-node-find :which-key "Find zettel")
+    "z i" '(org-roam-node-insert :which-key "Insert zettel at point")
+    "z c" '(org-roam-capture :which-key "Zettel capture")
+    "z g" '(org-roam-graph :which-key "Zettel graph"))
   :hook
   (org-roam-capture-new-node . gm/tag-new-node-as-draft)
   :config
@@ -212,6 +248,7 @@
 
 (use-package citar
   :demand t
+  :after (org)
   :custom
   (org-cite-global-bibliography '("~/org/roam/biblio.bib"))
   (citar-bibliography org-cite-global-bibliography)
@@ -272,110 +309,28 @@
 
 (use-package vertico
   :init
-  (vertico-mode))
-
-(use-package consult
-  :hook (completion-list-mode . consult-preview-at-point-mode))
-
-(defun gm/split-window-vertically-with-focus ()
-  (interactive)
-  (evil-window-vsplit)
-  (other-window 1))
-
-(defun gm/split-window-horizontally-with-focus ()
-  (interactive)
-  (evil-window-split)
-  (other-window 1))
-
-(use-package general
-  :config
-  (general-create-definer leader-keys
-    :states 'normal
-    :keymaps '(normal visual emacs override)
-    :prefix "SPC")
-  (leader-keys
-    "," '(switch-to-buffer :which-key "Switch to buffer")
-    "<" '(persp-switch-to-buffer :which-key "Switch to buffer (But to another perspective if necessary)")
-    "." '(find-file :which-key "Find file")
-
-    ;; Window
-    "w s" '(evil-window-split :which-key "Horizontal split")
-    "w S" '(gm/split-window-horizontally-with-focus :which-key "Horizontal split with focus")
-    "w v" '(evil-window-vsplit :which-key "Vertical split")
-    "w V" '(gm/split-window-vertically-with-focus :which-key "Vertical split with focus")
-    "w c" '(evil-window-delete :which-key "Close window")
-    "w q" '(evil-quit :which-key "Quit window")
-    "w z" '(zoom-window-zoom :which-key "Toggle window zoom")
-    "w h" '(windmove-left :which-key "Move to left window")
-    "w j" '(windmove-down :which-key "Move to lower window")
-    "w k" '(windmove-up :which-key "Move to upper window")
-    "w l" '(windmove-right :which-key "Move to right window")
-
-    ;; Buffers
-    "b k" '(kill-buffer :which-key "Kill buffer")
-    "b r" '(rename-buffer :which-key "Rename buffer")
-
-    ;; Magit
-    "g s" '(magit-status :which-key "Magit status")
-    "g g" '(magit-status :which-key "Magit status")
-
-    ;; Forge
-    "f o p" '(forge-browse-pullreqs :which-key "Forge open pull requests")
-
-    ;; Org Mode
-    "o t" '(org-todo :which-key "Org TODO")
-    "o a" '(org-agenda :which-key "Org agenda")
-    "o c" '(org-capture :which-key "Org capture")
-    "o q" '(org-set-tags-command :which-key "Org set tags")
-    "o s" '(org-schedule :which-key "Org schedule")
-    "o p" '(org-priority :which-key "Org priority")
-    "o i" '(org-toggle-inline-images :which-key "Org image show")
-    "o o" '(org-open-at-point :which-key "Org open link at point")
-    "o b" '(org-cite-insert :which-key "Org biblio cite insert")
-
-    ;; Org Roam (Zettelkasten)
-    "z l" '(org-roam-buffer-toggle :which-key "Zettel buffer toggle")
-    "z f" '(org-roam-node-find :which-key "Find zettel")
-    "z i" '(org-roam-node-insert :which-key "Insert zettel at point")
-    "z c" '(org-roam-capture :which-key "Zettel capture")
-    "z g" '(org-roam-graph :which-key "Zettel graph")
-
-    ;; Project
-    "p f" '(consult-find :which-key "Run a fuzzy find against project files")
-    "p s" '(consult-ripgrep :which-key "Run ripgrep against project files")
-    "p p" '(projectile-persp-switch-project :which-key "Switch to project in a new perspective")
-    "p e" '(project-eshell :which-key "Open a new eshell instance in the project directory")
-    "p c" '(projectile-add-known-project :which-key "Creates a new project")
-
-    ;; Workspaces
-    "TAB ," '(persp-switch :which-key "Switch to a workspace")
-    "TAB r" '(persp-rename :which-key "Rename workspace")
-    "TAB d" '(persp-kill :which-key "Delete workspace")
-    "TAB k" '(persp-kill :which-key "Delete workspace")
-    "TAB q" '(persp-kill :which-key "Delete workspace"))
-
+  (vertico-mode)
+  ;; Add vim keybindings to vertico
+  :general
   (general-define-key
-    :states 'normal
-    :keymaps '(normal override)
-    "K" '(lsp-ui-doc-glance :which-key "Show module docs")
-    "g r" '(lsp-find-references :which-key "Find usages of code"))
-
-  (general-define-key
-    :keymaps '(insert normal)
-    "C-SPC" '(company-complete :which-key "Trigger completion at point"))
-
-  (general-define-key
-    :keymaps '(normal visual)
-    "C-/" '(comment-or-uncomment-region :which-key "Comment or uncomment region")))
-
-;; Add vim keybindings to vertico
-;; TODO: put this inside "use-package" somehow
-(eval-after-load 'vertico
-  '(general-define-key :keymaps '(vertico-map)
+   :keymaps '(vertico-map)
     "C-J"      #'vertico-next-group
     "C-K"      #'vertico-previous-group
     "C-j"      #'vertico-next
     "C-k"      #'vertico-previous))
+
+(use-package consult
+  :hook (completion-list-mode . consult-preview-at-point-mode))
+
+(use-package general
+  :demand t
+  :config
+  (setq general-evil-setup t)
+
+  (general-create-definer leader-keys
+    :states 'normal
+    :keymaps '(normal visual emacs override)
+    :prefix "SPC"))
 
 ;; UI
 
@@ -419,18 +374,6 @@
   :config
   (load-theme 'doom-gruvbox t))
 
-(use-package emacs
-  :custom
-  (display-buffer-alist
-   '(("\\*haskell\\*"
-      (display-buffer-in-side-window)
-      (window-height . 0.25)
-      (side . bottom)
-      (slot . -1)))))
-
-(use-package zoom-window
-  :custom (zoom-window-mode-line-color nil))
-
 ;; Evil Mode
 
 (use-package evil
@@ -440,7 +383,27 @@
   (setq evil-undo-system 'undo-fu)
   :config
   (evil-mode 1)
-  (setq evil-insert-state-cursor 'box))
+  (setq evil-insert-state-cursor 'box)
+
+  (defun gm/split-window-vertically-with-focus ()
+    (interactive)
+    (evil-window-vsplit)
+    (other-window 1))
+  (defun gm/split-window-horizontally-with-focus ()
+    (interactive)
+    (evil-window-split)
+    (other-window 1))
+
+  :general
+  (general-define-key
+    :states 'normal
+    :keymaps '(normal visual emacs override)
+    :prefix "SPC"
+    "w s" '(evil-window-split :which-key "Horizontal split")
+    "w S" '(gm/split-window-horizontally-with-focus :which-key "Horizontal split with focus")
+    "w v" '(evil-window-vsplit :which-key "Vertical split")
+    "w V" '(gm/split-window-vertically-with-focus :which-key "Vertical split with focus")
+    "w q" '(evil-quit :which-key "Quit window")))
 
 (use-package evil-collection
   :after evil
@@ -512,6 +475,12 @@
 
 (use-package magit
   :commands (magit-status magit-get-current-branch)
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps '(normal visual emacs override)
+   :prefix "SPC"
+   "g g" '(magit-status :which-key "Magit status"))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   :config
@@ -521,6 +490,12 @@
 
 (use-package forge
   :after magit
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps '(normal visual emacs override)
+   :prefix "SPC"
+   "f o p" '(forge-browse-pullreqs :which-key "Forge open pull requests"))
   :config
   (setq auth-sources '("~/.authinfo")))
 
@@ -529,15 +504,35 @@
 (use-package perspective
   :init (persp-mode)
   :custom
-  (persp-suppress-no-prefix-key-warning t))
+  (persp-suppress-no-prefix-key-warning t)
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps '(normal visual emacs override)
+   :prefix "SPC"
+    "TAB ," '(persp-switch :which-key "Switch to a workspace")
+    "TAB r" '(persp-rename :which-key "Rename workspace")
+    "TAB d" '(persp-kill :which-key "Delete workspace")
+    "TAB k" '(persp-kill :which-key "Delete workspace")
+    "TAB q" '(persp-kill :which-key "Delete workspace")))
 
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-mode)
   :init
   ;; When switching to a new project, magit-status if the project is a git repo, otherwise dired
   (setq projectile-switch-project-action #'magit-status)
-  (setq projectile-track-known-projects-automatically nil))
+  (setq projectile-track-known-projects-automatically nil)
+  :config (projectile-mode)
+  :general
+  (general-define-key
+   :states 'normal
+   :keymaps '(normal visual emacs override)
+   :prefix "SPC"
+   "p f" '(consult-find :which-key "Run a fuzzy find against project files")
+   "p s" '(consult-ripgrep :which-key "Run ripgrep against project files")
+   "p p" '(projectile-persp-switch-project :which-key "Switch to project in a new perspective")
+   "p e" '(project-eshell :which-key "Open a new eshell instance in the project directory")
+   "p c" '(projectile-add-known-project :which-key "Creates a new project")))
 
 (use-package persp-projectile
     :straight (persp-projectile
@@ -552,7 +547,12 @@
   :config
   (lsp-enable-which-key-integration t)
   (setq lsp-enable-file-watchers t)
-  (setq lsp-file-watch-threshold nil))
+  (setq lsp-file-watch-threshold nil)
+  :general
+  (general-define-key
+    :states 'normal
+    :keymaps '(normal override)
+    "g r" '(lsp-find-references :which-key "Find usages of code")))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -565,14 +565,23 @@
   (lsp-eldoc-enable-hover nil)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-signature-auto-activate nil)
-  (lsp-signature-render-documentation nil))
+  (lsp-signature-render-documentation nil)
+  :general
+  (general-define-key
+    :states 'normal
+    :keymaps '(normal override)
+    "K" '(lsp-ui-doc-glance :which-key "Show module docs")))
 
 (use-package company
   :after lsp-mode
   :hook (prog-mode . company-mode)
   :custom
   (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+  (company-idle-delay 0.0)
+  :general
+  (general-define-key
+    :keymaps '(insert normal)
+    "C-SPC" '(company-complete :which-key "Trigger completion at point")))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))

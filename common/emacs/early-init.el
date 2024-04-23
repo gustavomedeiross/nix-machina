@@ -8,8 +8,9 @@
 
 (defconst emacs-start-time (current-time))
 
+;; TODO: this is commented: is this correct?
 ;; Prevent package.el loading packages prior to their init-file loading
-(setq package-enable-at-startup nil)
+;; (setq package-enable-at-startup nil)
 
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
