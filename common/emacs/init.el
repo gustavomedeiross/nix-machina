@@ -6,8 +6,67 @@
 (require 'bind-key)
 (require 'general)
 
-;; TODO: add more things here
 (use-package emacs
+  :config
+  ;; Remove welcome screen
+  (setq inhibit-startup-message t)
+  ;; Disable backup~ files
+  (setq make-backup-files nil)
+  ;; Disable .#lock files
+  (setq create-lockfiles nil)
+  ;; Disable beeps
+  (setq ring-bell-function 'ignore)
+  ;; Disable visible scrollbar
+  (scroll-bar-mode -1)
+  ;; Disable the toolbar
+  (tool-bar-mode -1)
+  ;; Disable tooltips
+  (tooltip-mode -1)
+  ;; Give some breathing room
+  (set-fringe-mode 10)
+  ;; Disable the menu bar
+  (menu-bar-mode -1)
+  ;; Disable eldoc
+  (global-eldoc-mode -1)
+
+  ;; Tabs
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq indent-line-function 'insert-tab)
+
+  ;; Make ESC quit prompts
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+  (setq display-line-numbers-type 'relative)
+
+  (set-frame-font "Fira Code 12" nil t)
+
+  ;; Makes emacs frame maximized by default (useful for floating window managers systems)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+  ;; Move autosave and backup files to ~/.auto-saves
+  (defvar user-temporary-file-directory
+    (concat temporary-file-directory user-login-name "/"))
+  (make-directory user-temporary-file-directory t)
+  (setq backup-by-copying t)
+  (setq backup-directory-alist
+        `(("." . ,user-temporary-file-directory)
+          (,tramp-file-name-regexp nil)))
+  (setq auto-save-list-file-prefix
+        (concat user-temporary-file-directory ".auto-saves-"))
+  (setq auto-save-file-name-transforms
+        `((".*" ,user-temporary-file-directory t)))
+
+  ;; MacOS
+  (setq mac-option-key-is-meta nil
+        mac-command-key-is-meta t
+        mac-command-modifier 'meta
+        mac-option-modifier 'none)
+
+  (setq custom-file (concat user-emacs-directory "/custom.el"))
+
   :custom
   (display-buffer-alist
    '(("\\*haskell\\*"
@@ -34,52 +93,13 @@
    :keymaps '(normal visual)
    "C-/" '(comment-or-uncomment-region :which-key "Comment or uncomment region")))
 
-(setq inhibit-startup-message t) ; Remove welcome screen
-(setq make-backup-files nil) ; Disable backup~ files
-(setq create-lockfiles nil) ; Disable .#lock files
-(setq ring-bell-function 'ignore) ; Disable beeps
-(scroll-bar-mode -1) ; Disable visible scrollbar
-(tool-bar-mode -1) ; Disable the toolbar
-(tooltip-mode -1) ; Disable tooltips
-(set-fringe-mode 10) ; Give some breathing room
-(menu-bar-mode -1) ; Disable the menu bar
-(global-eldoc-mode -1) ; Disable eldoc
-
-;; Tabs
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq indent-line-function 'insert-tab)
-
-;; Make ESC quit prompts
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-(column-number-mode)
-(global-display-line-numbers-mode t)
-(setq display-line-numbers-type 'relative)
-
-(set-frame-font "Fira Code 12" nil t)
-
-;; Makes emacs frame maximized by default (useful for floating window managers systems)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-
-;; Auto-refresh dired
-(add-hook 'dired-mode-hook 'auto-revert-mode)
-
-;; Easily copy-paste files with split windows
-(setq dired-dwim-target t)
-
-;; Move autosave and backup files to ~/.auto-saves
-(defvar user-temporary-file-directory
-  (concat temporary-file-directory user-login-name "/"))
-(make-directory user-temporary-file-directory t)
-(setq backup-by-copying t)
-(setq backup-directory-alist
-      `(("." . ,user-temporary-file-directory)
-        (,tramp-file-name-regexp nil)))
-(setq auto-save-list-file-prefix
-      (concat user-temporary-file-directory ".auto-saves-"))
-(setq auto-save-file-name-transforms
-      `((".*" ,user-temporary-file-directory t)))
+(use-package dired
+  :ensure nil
+  ;; Auto-refresh dired
+  :hook (dired-mode . auto-revert-mode)
+  :config
+  ;; Easily copy-paste files with split windows
+  (setq dired-dwim-target t))
 
 ;; Copy current file path and line number to clipboard
 (defun gm/copy-current-line-position-to-clipboard ()
@@ -90,14 +110,6 @@
            (concat (dired-replace-in-string project-path "" (buffer-file-name)) ":" (number-to-string (line-number-at-pos)))))
       (kill-new path-with-line-number)
       (message (concat path-with-line-number " copied to clipboard"))))
-
-;; MacOS
-(setq mac-option-key-is-meta nil
-      mac-command-key-is-meta t
-      mac-command-modifier 'meta
-      mac-option-modifier 'none)
-
-(setq custom-file (concat user-emacs-directory "/custom.el"))
 
 ;; Package specifics
 
