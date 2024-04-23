@@ -6,6 +6,8 @@
 (require 'bind-key)
 (require 'general)
 
+(setq use-package-always-ensure t)
+
 (use-package emacs
   :config
   ;; Remove welcome screen
