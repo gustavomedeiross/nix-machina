@@ -82,7 +82,9 @@
     :keymaps '(normal visual emacs override)
     :prefix "SPC"
       "," '(switch-to-buffer :which-key "Switch to buffer")
+      "<" '(ibuffer :which-key "Open iBuffer")
       "." '(find-file :which-key "Find file")
+      ">" '(list-bookmarks :which-key "Bookmark list")
 
       "w h" '(windmove-left :which-key "Move to left window")
       "w j" '(windmove-down :which-key "Move to lower window")
