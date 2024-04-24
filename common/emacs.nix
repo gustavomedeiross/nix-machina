@@ -5,8 +5,7 @@
   # NB: Config files cannot contain unicode characters, since
   #     they're being parsed in nix, which lacks unicode
   #     support.
-  # config = ./emacs.org;
-  config = ./emacs/init.el;
+  config = ./emacs/config.org;
 
   # Whether to include your config as a default init file.
   # If being bool, the value of config is used.
@@ -38,7 +37,7 @@
   # Note that this is NOT recommended unless you have something like
   # `#+PROPERTY: header-args:emacs-lisp :tangle yes` in your config,
   # which defaults `:tangle` to `yes`.
-  # alwaysTangle = true;
+  alwaysTangle = true;
 
   # Optionally provide extra packages not in the configuration file.
   extraEmacsPackages = epkgs: [
