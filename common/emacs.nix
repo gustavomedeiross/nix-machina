@@ -1,4 +1,29 @@
 { pkgs, ... }:
+
+let
+  # not yet available in MELPA: https://github.com/copilot-emacs/copilot.el/issues/120
+  copilot-el =
+    let rev = "edf517a57f539eb41eaa2f92c6752538f3a62b72";
+    in pkgs.emacsPackages.trivialBuild {
+      pname = "copilot";
+      version = rev;
+
+      src = pkgs.fetchFromGitHub {
+        owner = "copilot-emacs";
+        repo = "copilot.el";
+        inherit rev;
+        sha256 = "sha256-53BGX2llkrM5mDmFSVe+O/Vo4F2gDJTFh/4TqBuQme8=";
+      };
+
+      packageRequires = with pkgs; with emacsPackages; [ dash editorconfig f s ];
+
+      meta = {
+        description = "An unofficial Copilot plugin for Emacs";
+        license = null;
+      };
+    };
+in
+
 (pkgs.emacsWithPackagesFromUsePackage {
   # Your Emacs config file. Org mode babel files are also
   # supported.
@@ -19,6 +44,7 @@
   defaultInitFile = true;
 
   # Package is optional, defaults to pkgs.emacs
+  # TODO: use emacsGcc
   package = pkgs.emacs29;
 
   # By default emacsWithPackagesFromUsePackage will only pull in
@@ -44,6 +70,8 @@
     epkgs.use-package
     epkgs.diminish
     epkgs.general
+    epkgs.vterm
+    copilot-el
   ];
 
   # Optionally override derivations.

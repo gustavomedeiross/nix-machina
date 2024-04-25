@@ -4,7 +4,7 @@
 #+OPTIONS: num:nil
 
 * Development
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; Activate use-package and the things it needs.
   ;; use-package is installed by emacs.nix,
   ;; and the other two libs are bundled with emacs.
@@ -669,20 +669,38 @@
     :config
     (setq typescript-indent-level 2))
 
-  ;; Lilypond
+#+end_src
+
+* Utils
+
+** Lilypond
+LilyPond mode, to produce music sheets on a text-based way.
+
+At some point I would like to be able to automatically download the files from the official
+LilyPond repo and feed them my site-lisp directory.
+
+#+begin_src emacs-lisp
   (use-package lilypond-mode
-    ;; :straight (:host github :repo "lilypond/lilypond" :files ("elisp" "*.el"))
-    :straight nil
+    :ensure nil
     :load-path "~/.emacs.d/site-lisp"
     :mode ("\\.ly\\'" . LilyPond-mode))
+#+end_src
 
-  ;; Copilot
+** Copilot
+For now, this is disabled by default.
+
+#+begin_src emacs-lisp
   (use-package copilot
-    :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
+    :ensure nil
     ;; Disable copilot-mode by default for now
-    ;; :init
-    ;; (add-hook 'prog-mode-hook 'copilot-mode)
+    ;; :hook (prog-mode . 'copilot-mode)
     :config
     (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
     (define-key copilot-completion-map (kbd "C-RET") 'copilot-accept-completion))
-#+END_SRC
+#+end_src
+
+** ChatGPT
+
+#+begin_src emacs-lisp
+  ;; (use-package chatgpt)
+#+end_src
