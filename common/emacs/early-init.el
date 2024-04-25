@@ -17,7 +17,7 @@
 (push '(vertical-scroll-bars) default-frame-alist)
 
 ;; Disable white flash when Emacs starts up
-(set-face-attribute 'default nil :background "#282828" :foreground "#D1C6A5")
+(set-face-attribute 'default nil :background "#000000" :foreground "#D4D2C9")
 
 ;; Makes emacs frame maximized by default (useful for floating window managers systems)
 (push '(fullscreen . maximized) initial-frame-alist)

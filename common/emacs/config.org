@@ -395,7 +395,7 @@
 
   (use-package doom-themes
     :config
-    (load-theme 'doom-gruvbox t))
+    (load-theme 'doom-ir-black t))
 
   (use-package zoom
     :config
