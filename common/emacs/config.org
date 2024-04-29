@@ -3,18 +3,27 @@
 #+PROPERTY: header-args:emacs-lisp :tangle yes
 #+OPTIONS: num:nil
 
-* Development
+* General Setup
+** Use Package
+Activate use-package and the things it needs. use-package is installed by emacs.nix, and the other two libs are bundled with emacs:
+
 #+begin_src emacs-lisp
-  ;; Activate use-package and the things it needs.
-  ;; use-package is installed by emacs.nix,
-  ;; and the other two libs are bundled with emacs.
   (require 'use-package)
   (require 'diminish)
   (require 'bind-key)
   (require 'general)
+#+end_src
 
+To avoid ~:ensure t~ on every ~use-package~ clause:
+
+#+begin_src emacs-lisp
   (setq use-package-always-ensure t)
+#+end_src
 
+** Emacs Config
+Emacs configurations, not related to any packages
+
+#+begin_src emacs-lisp
   (use-package emacs
     :config
     ;; Remove welcome screen
@@ -103,7 +112,11 @@
     (general-define-key
      :keymaps '(normal visual)
      "C-/" '(comment-or-uncomment-region :which-key "Comment or uncomment region")))
+#+end_src
 
+** Dired
+
+#+begin_src emacs-lisp
   (use-package dired
     :ensure nil
     ;; Auto-refresh dired
@@ -111,25 +124,414 @@
     :config
     ;; Easily copy-paste files with split windows
     (setq dired-dwim-target t))
+#+end_src
 
-  ;; Copy current file path and line number to clipboard
-  (defun gm/copy-current-line-position-to-clipboard ()
-    "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
-    (interactive)
-    (let* ((project-path (projectile-project-root))
-           (path-with-line-number
-            (concat (dired-replace-in-string project-path "" (buffer-file-name)) ":" (number-to-string (line-number-at-pos)))))
-      (kill-new path-with-line-number)
-      (message (concat path-with-line-number " copied to clipboard"))))
+** Keybindings
+*** General
+#+begin_src emacs-lisp
+  (use-package general
+    :demand t
+    :config
+    (setq general-evil-setup t)
 
-  ;; Package specifics
+    (general-create-definer leader-keys
+      :states 'normal
+      :keymaps '(normal visual emacs override)
+      :prefix "SPC"))
 
-  (use-package string-inflection)
+#+end_src
+*** Which key
+#+begin_src emacs-lisp
+  (use-package which-key
+    :init (which-key-mode)
+    :diminish which-key-mode
+    :config
+    (setq which-key-idle-delay 1))
 
-  (use-package multiple-cursors)
+#+end_src
+** Evil Mode
+#+begin_src emacs-lisp
+  (use-package evil
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-undo-system 'undo-fu)
+    :config
+    (evil-mode 1)
+    (setq evil-insert-state-cursor 'box)
 
+    (defun gm/split-window-vertically-with-focus ()
+      (interactive)
+      (evil-window-vsplit)
+      (other-window 1))
+    (defun gm/split-window-horizontally-with-focus ()
+      (interactive)
+      (evil-window-split)
+      (other-window 1))
+
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal visual emacs override)
+     :prefix "SPC"
+     "w s" '(evil-window-split :which-key "Horizontal split")
+     "w S" '(gm/split-window-horizontally-with-focus :which-key "Horizontal split with focus")
+     "w v" '(evil-window-vsplit :which-key "Vertical split")
+     "w V" '(gm/split-window-vertically-with-focus :which-key "Vertical split with focus")
+     "w q" '(evil-quit :which-key "Quit window")))
+
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
+
+  (use-package evil-escape
+    :init
+    (setq-default evil-escape-key-sequence "jk")
+    :config
+    (evil-escape-mode))
+
+  ;; Undo
+
+  (use-package undo-fu
+    :commands (undo-fu-only-undo)
+    :defer nil)
+
+  (use-package undo-fu-session
+    :init (undo-fu-session-global-mode))
+
+#+end_src
+** Shells
+#+begin_src emacs-lisp
+  (use-package eshell
+    :hook
+    (eshell-mode . (lambda ()
+                     (display-line-numbers-mode 0)
+                     (setenv "TERM" "xterm-256color")))
+    ;; Truncate buffer for performance
+    (eshell-output-filter-functions . eshell-truncate-buffer)
+    ;; Save command history when commands are entered
+    (eshell-pre-command-hook . eshell-save-some-history)
+    :config
+    (setq eshell-history-size 10000
+          eshell-buffer-maximum-lines 10000
+          eshell-hist-ignoredups t
+          eshell-scroll-to-bottom-on-input t)
+    (evil-normalize-keymaps))
+
+  (defun spawn-eshell (name)
+    "Create a new named eshell buffer"
+    (interactive "MName: ")
+    (setq name (concat "$" name))
+    (eshell)
+    (rename-buffer name))
+
+  (use-package exec-path-from-shell
+    :init
+    (exec-path-from-shell-initialize)
+    :config
+    (exec-path-from-shell-copy-envs '("PATH")))
+
+  (use-package eat
+    :straight
+    (:type git
+           :host codeberg
+           :repo "akib/emacs-eat"
+           :files ("*.el" ("term" "term/*.el") "*.texi"
+                   "*.ti" ("terminfo/e" "terminfo/e/*")
+                   ("terminfo/65" "terminfo/65/*")
+                   ("integration" "integration/*")
+                   (:exclude ".dir-locals.el" "*-tests.el"))))
+
+  (use-package vterm
+    :config
+    (setq vterm-max-scrollback 10000))
+
+#+end_src
+* User Interface
+** Completions
+*** Vertico
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init
+    (vertico-mode)
+    ;; Add vim keybindings to vertico
+    :general
+    (general-define-key
+     :keymaps '(vertico-map)
+     "C-J"      #'vertico-next-group
+     "C-K"      #'vertico-previous-group
+     "C-j"      #'vertico-next
+     "C-k"      #'vertico-previous))
+#+end_src
+*** Consult
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :hook (completion-list-mode . consult-preview-at-point-mode))
+
+#+end_src
+** Dashboard
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-center-content t)
+    (setq dashboard-icon-type 'all-the-icons)
+    (setq dashboard-display-icons-p t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-page-separator "\n\n")
+    (setq dashboard-items '((bookmarks . 5)
+                            (projects . 5)))
+    (setq dashboard-heading-icons '((recents   . "history")
+                                    (bookmarks . "bookmark")
+                                    (agenda    . "calendar")
+                                    (projects  . "rocket")
+                                    (registers . "database")))
+    (setq dashboard-projects-switch-function #'projectile-persp-switch-project))
+
+#+end_src
+** Icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :if (display-graphic-p))
+
+  (use-package all-the-icons-dired
+    :init
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+    :custom
+    (all-the-icons-dired-monochrome nil))
+#+end_src
+
+** Modeline
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :init (doom-modeline-mode 1)
+    :config
+    (setq doom-modeline-modal nil)
+    (setq doom-modeline-battery t)
+    (setq doom-modeline-buffer-encoding nil)
+    (setq doom-modeline-lsp nil)
+    (setq doom-modeline-checker-simple-format t))
+#+end_src
+
+** Themes
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config
+    (load-theme 'doom-ir-black t))
+#+end_src
+
+** Zoom
+Useful to zoom to the current window when you have multiple splits. This is setup to use the fibonacci ratio:
+#+begin_src emacs-lisp
+  (use-package zoom
+    :config
+    (zoom-mode t)
+    :custom
+    (zoom-size '(0.618 . 0.618)))
+#+end_src
+** Perspectives
+#+begin_src emacs-lisp
+  (use-package perspective
+    :init (persp-mode)
+    :custom
+    (persp-suppress-no-prefix-key-warning t)
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal visual emacs override)
+     :prefix "SPC"
+     "TAB ," '(persp-switch :which-key "Switch to a workspace")
+     "TAB r" '(persp-rename :which-key "Rename workspace")
+     "TAB d" '(persp-kill :which-key "Delete workspace")
+     "TAB k" '(persp-kill :which-key "Delete workspace")
+     "TAB q" '(persp-kill :which-key "Delete workspace")))
+#+end_src
+* Development
+
+** Magit & Git
+#+begin_src emacs-lisp
   (use-package git-link)
 
+  (use-package magit
+    :commands (magit-status magit-get-current-branch)
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal visual emacs override)
+     :prefix "SPC"
+     "g g" '(magit-status :which-key "Magit status"))
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+    :config
+    (general-define-key
+     :keymaps 'transient-base-map
+     "<escape>" 'transient-quit-one))
+
+  (use-package forge
+    :after magit
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal visual emacs override)
+     :prefix "SPC"
+     "f o p" '(forge-browse-pullreqs :which-key "Forge open pull requests"))
+    :config
+    (setq auth-sources '("~/.authinfo")))
+#+end_src
+** Projects
+#+begin_src emacs-lisp
+  (use-package projectile
+    :diminish projectile-mode
+    :init
+    ;; When switching to a new project, magit-status if the project is a git repo, otherwise dired
+    (setq projectile-switch-project-action #'magit-status)
+    (setq projectile-track-known-projects-automatically nil)
+    :config (projectile-mode)
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal visual emacs override)
+     :prefix "SPC"
+     "p f" '(consult-find :which-key "Run a fuzzy find against project files")
+     "p s" '(consult-ripgrep :which-key "Run ripgrep against project files")
+     "p p" '(projectile-persp-switch-project :which-key "Switch to project in a new perspective")
+     "p e" '(project-eshell :which-key "Open a new eshell instance in the project directory")
+     "p c" '(projectile-add-known-project :which-key "Creates a new project")))
+
+  (use-package persp-projectile
+    :straight (persp-projectile
+               :host github
+               :repo "bbatsov/persp-projectile")
+    :commands (projectile-persp-switch-project))
+#+end_src
+** LSP
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :config
+    (lsp-enable-which-key-integration t)
+    (setq lsp-enable-file-watchers t)
+    (setq lsp-file-watch-threshold nil)
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal override)
+     "g r" '(lsp-find-references :which-key "Find usages of code")))
+
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom
+    (lsp-ui-doc-position 'at-point)
+    (lsp-ui-doc-enable nil)
+    (lsp-headerline-breadcrumb-enable nil)
+    (lsp-ui-sideline-enable nil)
+    (lsp-modeline-code-actions-enable nil)
+    (lsp-eldoc-enable-hover nil)
+    (lsp-modeline-diagnostics-enable nil)
+    (lsp-signature-auto-activate nil)
+    (lsp-signature-render-documentation nil)
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal override)
+     "K" '(lsp-ui-doc-glance :which-key "Show module docs")))
+
+#+end_src
+** Autocomplete
+#+begin_src emacs-lisp
+  (use-package company
+    :after lsp-mode
+    :hook (prog-mode . company-mode)
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0)
+    :general
+    (general-define-key
+     :keymaps '(insert normal)
+     "C-SPC" '(company-complete :which-key "Trigger completion at point")))
+
+  (use-package company-box
+    :hook (company-mode . company-box-mode))
+#+end_src
+** Errors
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :config
+    (global-flycheck-mode))
+
+  (use-package flycheck-posframe
+    :after flycheck
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
+    #+end_src
+** Direnv
+#+begin_src emacs-lisp
+  (use-package direnv
+    :config
+    (direnv-mode))
+#+end_src
+
+** Programming Languages
+#+begin_src emacs-lisp
+  (use-package json-mode)
+  (use-package yaml-mode)
+
+  ;; Nix
+  (use-package nix-mode
+    :mode "\\.nix\\'")
+
+  ;; OCaml
+  (use-package tuareg
+    :hook (tuareg-mode . lsp-deferred)
+    :config
+    (lsp-register-client
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection '("opam" "exec" "--" "ocamllsp"))
+      :major-modes '(tuareg-mode)
+      :server-id 'ocamlmerlin-lsp)))
+
+  ;; Haskell
+  (use-package lsp-haskell)
+  (use-package haskell-mode
+    :init
+    (add-hook 'haskell-mode-hook #'lsp)
+    (add-hook 'haskell-literate-mode-hook #'lsp))
+
+  ;; Elixir
+  (use-package elixir-mode
+    :hook (elixir-mode . lsp-deferred))
+
+  ;; Rust
+  (use-package rust-mode
+    :hook (rust-mode . lsp-deferred))
+
+  ;; TypeScript
+  (use-package typescript-mode
+    :mode "\\.ts\\'"
+    :hook (typescript-mode . lsp-deferred)
+    :config
+    (setq typescript-indent-level 2))
+#+end_src
+
+** Copilot
+For now, this is disabled by default.
+
+#+begin_src emacs-lisp
+  (use-package copilot
+    :ensure nil
+    ;; Disable copilot-mode by default for now
+    ;; :hook (prog-mode . 'copilot-mode)
+    :config
+    (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "C-RET") 'copilot-accept-completion))
+#+end_src
+
+* Org
+#+begin_src emacs-lisp
   (use-package org
     :hook (org-mode . (lambda ()
                         (org-indent-mode)
@@ -309,13 +711,6 @@
                          :node (org-roam-node-create :title title)
                          :props '(:finalize find-file))))
 
-  (use-package ox-slack)
-
-  (defun gm/org-export-slack-to-clipboard ()
-    "Exports org-mode text to be pasted in Slack"
-    (interactive)
-    (org-slack-export-to-clipboard-as-slack))
-
   (use-package tex-site
     :straight (auctex :host github
                       :repo "emacsmirror/auctex"
@@ -323,356 +718,31 @@
     :defer t
     :config
     (setq TeX-auto-save nil))
+#+end_src
+* Utils
+** String cases
+TODO: create custom functions using ~string-inflection~
 
-  (use-package which-key
-    :init (which-key-mode)
-    :diminish which-key-mode
-    :config
-    (setq which-key-idle-delay 1))
+#+begin_src emacs-lisp
+  (use-package string-inflection)
+#+end_src
+** Slack
+#+begin_src emacs-lisp
+  (use-package ox-slack)
 
-  (use-package vertico
-    :init
-    (vertico-mode)
-    ;; Add vim keybindings to vertico
-    :general
-    (general-define-key
-     :keymaps '(vertico-map)
-     "C-J"      #'vertico-next-group
-     "C-K"      #'vertico-previous-group
-     "C-j"      #'vertico-next
-     "C-k"      #'vertico-previous))
-
-  (use-package consult
-    :hook (completion-list-mode . consult-preview-at-point-mode))
-
-  (use-package general
-    :demand t
-    :config
-    (setq general-evil-setup t)
-
-    (general-create-definer leader-keys
-      :states 'normal
-      :keymaps '(normal visual emacs override)
-      :prefix "SPC"))
-
-  ;; UI
-
-  (use-package dashboard
-    :config
-    (dashboard-setup-startup-hook)
-    (setq dashboard-center-content t)
-    (setq dashboard-icon-type 'all-the-icons)
-    (setq dashboard-display-icons-p t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-page-separator "\n\n")
-    (setq dashboard-items '((bookmarks . 5)
-                            (projects . 5)))
-    (setq dashboard-heading-icons '((recents   . "history")
-                                    (bookmarks . "bookmark")
-                                    (agenda    . "calendar")
-                                    (projects  . "rocket")
-                                    (registers . "database")))
-    (setq dashboard-projects-switch-function #'projectile-persp-switch-project))
-
-  (use-package all-the-icons
-    :if (display-graphic-p))
-
-  (use-package all-the-icons-dired
-    :init
-    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-    :custom
-    (all-the-icons-dired-monochrome nil))
-
-  (use-package doom-modeline
-    :init (doom-modeline-mode 1)
-    :config
-    (setq doom-modeline-modal nil)
-    (setq doom-modeline-battery t)
-    (setq doom-modeline-buffer-encoding nil)
-    (setq doom-modeline-lsp nil)
-    (setq doom-modeline-checker-simple-format t))
-
-  (use-package doom-themes
-    :config
-    (load-theme 'doom-ir-black t))
-
-  (use-package zoom
-    :config
-    (zoom-mode t)
-    :custom
-    (zoom-size '(0.618 . 0.618)))
-
-  ;; Evil Mode
-
-  (use-package evil
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-undo-system 'undo-fu)
-    :config
-    (evil-mode 1)
-    (setq evil-insert-state-cursor 'box)
-
-    (defun gm/split-window-vertically-with-focus ()
-      (interactive)
-      (evil-window-vsplit)
-      (other-window 1))
-    (defun gm/split-window-horizontally-with-focus ()
-      (interactive)
-      (evil-window-split)
-      (other-window 1))
-
-    :general
-    (general-define-key
-     :states 'normal
-     :keymaps '(normal visual emacs override)
-     :prefix "SPC"
-     "w s" '(evil-window-split :which-key "Horizontal split")
-     "w S" '(gm/split-window-horizontally-with-focus :which-key "Horizontal split with focus")
-     "w v" '(evil-window-vsplit :which-key "Vertical split")
-     "w V" '(gm/split-window-vertically-with-focus :which-key "Vertical split with focus")
-     "w q" '(evil-quit :which-key "Quit window")))
-
-  (use-package evil-collection
-    :after evil
-    :config
-    (evil-collection-init))
-
-  (use-package evil-escape
-    :init
-    (setq-default evil-escape-key-sequence "jk")
-    :config
-    (evil-escape-mode))
-
-  ;; Undo
-
-  (use-package undo-fu
-    :commands (undo-fu-only-undo)
-    :defer nil)
-
-  (use-package undo-fu-session
-    :init (undo-fu-session-global-mode))
-
-  ;; Shell
-
-  (use-package eshell
-    :hook
-    (eshell-mode . (lambda ()
-                     (display-line-numbers-mode 0)
-                     (setenv "TERM" "xterm-256color")))
-    ;; Truncate buffer for performance
-    (eshell-output-filter-functions . eshell-truncate-buffer)
-    ;; Save command history when commands are entered
-    (eshell-pre-command-hook . eshell-save-some-history)
-    :config
-    (setq eshell-history-size 10000
-          eshell-buffer-maximum-lines 10000
-          eshell-hist-ignoredups t
-          eshell-scroll-to-bottom-on-input t)
-    (evil-normalize-keymaps))
-
-  (defun spawn-eshell (name)
-    "Create a new named eshell buffer"
-    (interactive "MName: ")
-    (setq name (concat "$" name))
-    (eshell)
-    (rename-buffer name))
-
-  (use-package exec-path-from-shell
-    :init
-    (exec-path-from-shell-initialize)
-    :config
-    (exec-path-from-shell-copy-envs '("PATH")))
-
-  (use-package eat
-    :straight
-    (:type git
-           :host codeberg
-           :repo "akib/emacs-eat"
-           :files ("*.el" ("term" "term/*.el") "*.texi"
-                   "*.ti" ("terminfo/e" "terminfo/e/*")
-                   ("terminfo/65" "terminfo/65/*")
-                   ("integration" "integration/*")
-                   (:exclude ".dir-locals.el" "*-tests.el"))))
-
-  (use-package vterm
-    :config
-    (setq vterm-max-scrollback 10000))
-
-  ;; Magit
-
-  (use-package magit
-    :commands (magit-status magit-get-current-branch)
-    :general
-    (general-define-key
-     :states 'normal
-     :keymaps '(normal visual emacs override)
-     :prefix "SPC"
-     "g g" '(magit-status :which-key "Magit status"))
-    :custom
-    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-    :config
-    (general-define-key
-     :keymaps 'transient-base-map
-     "<escape>" 'transient-quit-one))
-
-  (use-package forge
-    :after magit
-    :general
-    (general-define-key
-     :states 'normal
-     :keymaps '(normal visual emacs override)
-     :prefix "SPC"
-     "f o p" '(forge-browse-pullreqs :which-key "Forge open pull requests"))
-    :config
-    (setq auth-sources '("~/.authinfo")))
-
-  ;; Perspectives + Projectile
-
-  (use-package perspective
-    :init (persp-mode)
-    :custom
-    (persp-suppress-no-prefix-key-warning t)
-    :general
-    (general-define-key
-     :states 'normal
-     :keymaps '(normal visual emacs override)
-     :prefix "SPC"
-     "TAB ," '(persp-switch :which-key "Switch to a workspace")
-     "TAB r" '(persp-rename :which-key "Rename workspace")
-     "TAB d" '(persp-kill :which-key "Delete workspace")
-     "TAB k" '(persp-kill :which-key "Delete workspace")
-     "TAB q" '(persp-kill :which-key "Delete workspace")))
-
-  (use-package projectile
-    :diminish projectile-mode
-    :init
-    ;; When switching to a new project, magit-status if the project is a git repo, otherwise dired
-    (setq projectile-switch-project-action #'magit-status)
-    (setq projectile-track-known-projects-automatically nil)
-    :config (projectile-mode)
-    :general
-    (general-define-key
-     :states 'normal
-     :keymaps '(normal visual emacs override)
-     :prefix "SPC"
-     "p f" '(consult-find :which-key "Run a fuzzy find against project files")
-     "p s" '(consult-ripgrep :which-key "Run ripgrep against project files")
-     "p p" '(projectile-persp-switch-project :which-key "Switch to project in a new perspective")
-     "p e" '(project-eshell :which-key "Open a new eshell instance in the project directory")
-     "p c" '(projectile-add-known-project :which-key "Creates a new project")))
-
-  (use-package persp-projectile
-    :straight (persp-projectile
-               :host github
-               :repo "bbatsov/persp-projectile")
-    :commands (projectile-persp-switch-project))
-
-  ;; LSP & Auto-completion
-
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :config
-    (lsp-enable-which-key-integration t)
-    (setq lsp-enable-file-watchers t)
-    (setq lsp-file-watch-threshold nil)
-    :general
-    (general-define-key
-     :states 'normal
-     :keymaps '(normal override)
-     "g r" '(lsp-find-references :which-key "Find usages of code")))
-
-  (use-package lsp-ui
-    :hook (lsp-mode . lsp-ui-mode)
-    :custom
-    (lsp-ui-doc-position 'at-point)
-    (lsp-ui-doc-enable nil)
-    (lsp-headerline-breadcrumb-enable nil)
-    (lsp-ui-sideline-enable nil)
-    (lsp-modeline-code-actions-enable nil)
-    (lsp-eldoc-enable-hover nil)
-    (lsp-modeline-diagnostics-enable nil)
-    (lsp-signature-auto-activate nil)
-    (lsp-signature-render-documentation nil)
-    :general
-    (general-define-key
-     :states 'normal
-     :keymaps '(normal override)
-     "K" '(lsp-ui-doc-glance :which-key "Show module docs")))
-
-  (use-package company
-    :after lsp-mode
-    :hook (prog-mode . company-mode)
-    :custom
-    (company-minimum-prefix-length 1)
-    (company-idle-delay 0.0)
-    :general
-    (general-define-key
-     :keymaps '(insert normal)
-     "C-SPC" '(company-complete :which-key "Trigger completion at point")))
-
-  (use-package company-box
-    :hook (company-mode . company-box-mode))
-
-  (use-package flycheck
-    :config
-    (global-flycheck-mode))
-
-  (use-package flycheck-posframe
-    :after flycheck
-    :config
-    (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
-
-  (use-package direnv
-    :config
-    (direnv-mode))
-
-  (use-package json-mode)
-
-  (use-package yaml-mode)
-
-  ;; Nix
-
-  (use-package nix-mode
-    :mode "\\.nix\\'")
-
-  ;; OCaml
-  (use-package tuareg
-    :hook (tuareg-mode . lsp-deferred)
-    :config
-    (lsp-register-client
-     (make-lsp-client
-      :new-connection (lsp-stdio-connection '("opam" "exec" "--" "ocamllsp"))
-      :major-modes '(tuareg-mode)
-      :server-id 'ocamlmerlin-lsp)))
-
-  ;; Haskell
-  (use-package lsp-haskell)
-  (use-package haskell-mode
-    :init
-    (add-hook 'haskell-mode-hook #'lsp)
-    (add-hook 'haskell-literate-mode-hook #'lsp))
-
-  ;; Elixir
-  (use-package elixir-mode
-    :hook (elixir-mode . lsp-deferred))
-
-  ;; Rust
-  (use-package rust-mode
-    :hook (rust-mode . lsp-deferred))
-
-  ;; TypeScript
-  (use-package typescript-mode
-    :mode "\\.ts\\'"
-    :hook (typescript-mode . lsp-deferred)
-    :config
-    (setq typescript-indent-level 2))
+  (defun gm/org-export-slack-to-clipboard ()
+    "Exports org-mode text to be pasted in Slack"
+    (interactive)
+    (org-slack-export-to-clipboard-as-slack))
 
 #+end_src
+** ChatGPT
 
-* Utils
+#+begin_src emacs-lisp
+  ;; (use-package chatgpt)
+#+end_src
 
+* Fun
 ** Lilypond
 LilyPond mode, to produce music sheets on a text-based way.
 
@@ -686,21 +756,18 @@ LilyPond repo and feed them my site-lisp directory.
     :mode ("\\.ly\\'" . LilyPond-mode))
 #+end_src
 
-** Copilot
-For now, this is disabled by default.
+* Functions
+General functions that I use for random things
 
 #+begin_src emacs-lisp
-  (use-package copilot
-    :ensure nil
-    ;; Disable copilot-mode by default for now
-    ;; :hook (prog-mode . 'copilot-mode)
-    :config
-    (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "C-RET") 'copilot-accept-completion))
+  ;; Copy current file path and line number to clipboard
+  (defun gm/copy-current-line-position-to-clipboard ()
+    "Copy current line in file to clipboard as '</path/to/file>:<line-number>'."
+    (interactive)
+    (let* ((project-path (projectile-project-root))
+           (path-with-line-number
+            (concat (dired-replace-in-string project-path "" (buffer-file-name)) ":" (number-to-string (line-number-at-pos)))))
+      (kill-new path-with-line-number)
+      (message (concat path-with-line-number " copied to clipboard"))))
 #+end_src
 
-** ChatGPT
-
-#+begin_src emacs-lisp
-  ;; (use-package chatgpt)
-#+end_src
