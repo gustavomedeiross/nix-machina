@@ -627,11 +627,11 @@ For now, this is disabled by default.
      :states 'normal
      :keymaps '(normal visual emacs override)
      :prefix "SPC"
-     "z l" '(org-roam-buffer-toggle :which-key "Zettel buffer toggle")
-     "z f" '(org-roam-node-find :which-key "Find zettel")
-     "z i" '(org-roam-node-insert :which-key "Insert zettel at point")
-     "z c" '(org-roam-capture :which-key "Zettel capture")
-     "z g" '(org-roam-graph :which-key "Zettel graph"))
+     "o r l" '(org-roam-buffer-toggle :which-key "Org-roam buffer toggle")
+     "o r f" '(org-roam-node-find :which-key "Org-roam find node")
+     "o r i" '(org-roam-node-insert :which-key "Org-roam insert node at point")
+     "o r c" '(org-roam-capture :which-key "Or-roam capture")
+     "o r g" '(org-roam-graph :which-key "Org-roam graph"))
     :hook
     (org-roam-capture-new-node . gm/tag-new-node-as-draft)
     :config
