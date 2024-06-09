@@ -3,9 +3,7 @@
 [
   "1password"
   "appcleaner"
-  "balenaetcher"
   "brave-browser"
-  "calibre"
   "discord"
   "dropbox"
   "homebrew/cask/docker"
