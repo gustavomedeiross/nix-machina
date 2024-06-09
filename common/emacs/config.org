@@ -509,6 +509,10 @@ Useful to zoom to the current window when you have multiple splits. This is setu
   (use-package rust-mode
     :hook (rust-mode . lsp-deferred))
 
+  ;; C
+  (use-package c-mode
+    :hook (c-mode . lsp-deferred))
+
   ;; TypeScript
   (use-package typescript-mode
     :mode "\\.ts\\'"
@@ -533,6 +537,7 @@ For now, this is disabled by default.
 * Org
 #+begin_src emacs-lisp
   (use-package org
+    :ensure org-contrib
     :hook (org-mode . (lambda ()
                         (org-indent-mode)
                         (visual-line-mode 1)))
@@ -619,6 +624,11 @@ For now, this is disabled by default.
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
+  (use-package ox-extra
+    :ensure nil
+    :config
+    (ox-extras-activate '(latex-header-blocks ignore-headlines)))
+
   (use-package org-roam
     :custom
     (org-roam-directory "~/org/roam")
@@ -630,7 +640,7 @@ For now, this is disabled by default.
      "o r l" '(org-roam-buffer-toggle :which-key "Org-roam buffer toggle")
      "o r f" '(org-roam-node-find :which-key "Org-roam find node")
      "o r i" '(org-roam-node-insert :which-key "Org-roam insert node at point")
-     "o r c" '(org-roam-capture :which-key "Or-roam capture")
+     "o r c" '(org-roam-capture :which-key "Org-roam capture")
      "o r g" '(org-roam-graph :which-key "Org-roam graph"))
     :hook
     (org-roam-capture-new-node . gm/tag-new-node-as-draft)
