@@ -507,7 +507,9 @@ Useful to zoom to the current window when you have multiple splits. This is setu
 
   ;; Rust
   (use-package rust-mode
-    :hook (rust-mode . lsp-deferred))
+    :hook (rust-mode . lsp-deferred)
+    :config
+    (setq rust-format-on-save t))
 
   ;; C
   (use-package c-mode
@@ -779,5 +781,21 @@ General functions that I use for random things
             (concat (dired-replace-in-string project-path "" (buffer-file-name)) ":" (number-to-string (line-number-at-pos)))))
       (kill-new path-with-line-number)
       (message (concat path-with-line-number " copied to clipboard"))))
+
+  ;; From https://emacs.stackexchange.com/a/38657
+  (defun gm/find-file-at-point-goto-line (ret)
+    "Ignore RET and jump to line number (and optionally position) given in `ffap-string-at-point`."
+    (when (and
+           (stringp ffap-string-at-point)
+           (string-match ":\\([0-9]+\\)\\(?::\\([0-9]+\\)\\)?\\'" ffap-string-at-point))
+      (let ((line (string-to-number (match-string 1 ffap-string-at-point)))
+            (pos (match-string 2 ffap-string-at-point)))
+        (goto-char (point-min))
+        (forward-line (1- line))
+        (when pos
+          (move-to-column (string-to-number pos)))))
+    ret)
+
+  (advice-add 'find-file-at-point :filter-return #'gm/find-file-at-point-goto-line)
 #+end_src
 
