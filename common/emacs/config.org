@@ -217,7 +217,16 @@ Emacs configurations, not related to any packages
           eshell-buffer-maximum-lines 10000
           eshell-hist-ignoredups t
           eshell-scroll-to-bottom-on-input t)
-    (evil-normalize-keymaps))
+    (evil-normalize-keymaps)
+
+    (defun eshell-clear-buffer ()
+      "Clear the eshell buffer."
+      (interactive)
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (eshell-send-input)))
+
+    (define-key eshell-mode-map (kbd "C-l") 'eshell-clear-buffer))
 
   (defun spawn-eshell (name)
     "Create a new named eshell buffer"
@@ -509,7 +518,8 @@ Useful to zoom to the current window when you have multiple splits. This is setu
   (use-package rust-mode
     :hook (rust-mode . lsp-deferred)
     :config
-    (setq rust-format-on-save t))
+    (setq rust-format-on-save t)
+    (setq rust-format-show-buffer nil))
 
   ;; C
   (use-package c-mode
