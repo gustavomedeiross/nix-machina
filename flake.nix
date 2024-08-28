@@ -10,15 +10,11 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    devenv.url = "github:cachix/devenv/latest";
   };
 
-  outputs = inputs@{ self, nixpkgs, darwin, home-manager, devenv }:
+  outputs = inputs@{ self, nixpkgs, darwin, home-manager }:
     let
       overlays = [
-        (final: prev: {
-          devenv = inputs.devenv.packages.${prev.system}.devenv;
-        })
         (import (builtins.fetchTarball {
           url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
         }))

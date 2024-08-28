@@ -9,14 +9,13 @@ with pkgs; [
   chamber
   cmake
   coreutils
-  devenv
   docker
   docker-compose
   emacs
   fira-code
   fzf
   gcc
-  gh # github
+  gh
   google-cloud-sdk
   graphviz
   haproxy
