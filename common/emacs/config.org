@@ -666,7 +666,7 @@ For now, this is disabled by default.
                 ("j" . evil-next-line)
                 ("k" . evil-previous-line))
     :config
-    (setq org-agenda-files '("~/org/tasks.org"))
+    (setq org-agenda-files '("~/org/tasks.org" "~/org/casamento.org"))
     ;; Show the daily agenda by default.
     (setq org-agenda-span 'day)
     ;; Hide tasks that are scheduled in the future.

@@ -9,7 +9,6 @@
   "homebrew/cask/docker"
   "insomnia"
   "linear-linear"
-  "mactex"
   "postman"
   "slack"
   "spotify"
