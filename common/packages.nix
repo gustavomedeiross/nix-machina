@@ -5,6 +5,7 @@ let
 in
 with pkgs; [
   alacritty
+  awscli
   aws-vault
   chamber
   cmake
