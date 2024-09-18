@@ -7,6 +7,7 @@ with pkgs; [
   alacritty
   awscli
   aws-vault
+  borgbackup
   chamber
   cmake
   coreutils
