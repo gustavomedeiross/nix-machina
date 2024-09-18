@@ -638,11 +638,11 @@ For now, this is disabled by default.
     (setq org-todo-keywords
           '((sequence "TODO(t)" "NEXT(n)" "PROG(p)" "INTR(i)" "DONE(d)")))
     (setq org-capture-templates
-          '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
+          '(("t" "Todo" entry (file+headline "~/keep/org/tasks.org" "Tasks")
              "* TODO %?\n  %i\n  %a")
-            ("j" "Journal" entry (file+datetree "~/org/journal.org")
+            ("j" "Journal" entry (file+datetree "~/keep/org/journal.org")
              "* %?\nEntered on %U\n  %i\n  %a")
-            ("s" "Slipbox" entry  (file "~/org/slipbox.org")
+            ("s" "Slipbox" entry  (file "~/keep/org/slipbox.org")
              "* %?\n")))
     :general
     (general-define-key
@@ -666,7 +666,7 @@ For now, this is disabled by default.
                 ("j" . evil-next-line)
                 ("k" . evil-previous-line))
     :config
-    (setq org-agenda-files '("~/org/tasks.org" "~/org/casamento.org"))
+    (setq org-agenda-files '("~/keep/org/tasks.org"))
     ;; Show the daily agenda by default.
     (setq org-agenda-span 'day)
     ;; Hide tasks that are scheduled in the future.
@@ -698,7 +698,7 @@ For now, this is disabled by default.
 
   (use-package org-roam
     :custom
-    (org-roam-directory "~/org/roam")
+    (org-roam-directory "~/keep/org/roam")
     :general
     (general-define-key
      :states 'normal
@@ -752,7 +752,7 @@ For now, this is disabled by default.
     :demand t
     :after (org)
     :custom
-    (org-cite-global-bibliography '("~/org/roam/biblio.bib"))
+    (org-cite-global-bibliography '("~/keep/org/roam/biblio.bib"))
     (citar-bibliography org-cite-global-bibliography)
     (org-cite-insert-processor 'citar)
     (org-cite-follow-processor 'citar)
