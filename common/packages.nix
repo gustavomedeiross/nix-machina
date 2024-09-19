@@ -32,6 +32,7 @@ with pkgs; [
   openssh
   pandoc
   postgresql
+  rclone
   ripgrep
   tailscale
   tmux
