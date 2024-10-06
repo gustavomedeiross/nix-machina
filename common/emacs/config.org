@@ -563,6 +563,11 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :after tuareg
     :hook (before-save . ocamlformat-before-save))
 
+  (use-package dune)
+
+  (use-package dune-format
+    :hook (dune-mode . dune-format-on-save-mode))
+
   ;; Haskell
   (use-package lsp-haskell)
   (use-package haskell-mode
