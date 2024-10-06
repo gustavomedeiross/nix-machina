@@ -558,6 +558,11 @@ Useful to zoom to the current window when you have multiple splits. This is setu
       :major-modes '(tuareg-mode)
       :server-id 'ocamlmerlin-lsp)))
 
+  (use-package ocamlformat
+    :defer t
+    :after tuareg
+    :hook (before-save . ocamlformat-before-save))
+
   ;; Haskell
   (use-package lsp-haskell)
   (use-package haskell-mode

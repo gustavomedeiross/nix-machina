@@ -13,6 +13,7 @@ with pkgs; [
   coreutils
   docker
   docker-compose
+  dune_3
   emacs
   fira-code
   fzf
