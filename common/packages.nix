@@ -10,6 +10,7 @@ with pkgs; [
   borgbackup
   chamber
   cmake
+  clang-tools
   coreutils
   docker
   docker-compose

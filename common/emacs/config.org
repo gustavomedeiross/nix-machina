@@ -568,6 +568,11 @@ Useful to zoom to the current window when you have multiple splits. This is setu
   (use-package dune-format
     :hook (dune-mode . dune-format-on-save-mode))
 
+  ;; C
+  (use-package c-mode
+    :mode ("\\.c$" "\\.h$")
+    :hook (c-mode . lsp-deferred))
+
   ;; Haskell
   (use-package lsp-haskell)
   (use-package haskell-mode
@@ -585,10 +590,6 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :config
     (setq rust-format-on-save t)
     (setq rust-format-show-buffer nil))
-
-  ;; C
-  (use-package c-mode
-    :hook (c-mode . lsp-deferred))
 
   ;; TypeScript
   (use-package typescript-mode
