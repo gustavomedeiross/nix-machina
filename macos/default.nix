@@ -43,6 +43,7 @@
   );
 
   system = {
+    stateVersion = 5;
     defaults = {
       LaunchServices = {
         LSQuarantine = false;

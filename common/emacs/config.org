@@ -571,7 +571,9 @@ Useful to zoom to the current window when you have multiple splits. This is setu
   ;; C
   (use-package c-mode
     :mode ("\\.c$" "\\.h$")
-    :hook (c-mode . lsp-deferred))
+    :hook (c-mode . lsp-deferred)
+    :config
+    (setq c-basic-offset 4))
 
   ;; Haskell
   (use-package lsp-haskell)

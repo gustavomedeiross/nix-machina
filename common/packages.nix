@@ -14,7 +14,6 @@ with pkgs; [
   coreutils
   docker
   docker-compose
-  dune_3
   emacs
   fira-code
   fzf
@@ -29,6 +28,7 @@ with pkgs; [
   jq
   libgccjit
   libtool
+  nixfmt-rfc-style
   nodePackages.npm
   nodejs
   openssh
