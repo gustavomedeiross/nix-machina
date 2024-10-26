@@ -29,6 +29,8 @@
 
   programs = { };
 
+  security.pam.enableSudoTouchIdAuth = true;
+
   # Remove once this is done: https://github.com/nix-community/home-manager/issues/1341
   system.activationScripts.applications.text = pkgs.lib.mkForce (
     ''

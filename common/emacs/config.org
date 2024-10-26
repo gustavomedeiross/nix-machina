@@ -573,7 +573,13 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :mode ("\\.c$" "\\.h$")
     :hook (c-mode . lsp-deferred)
     :config
-    (setq c-basic-offset 4))
+    (setq-default c-basic-offset 4))
+
+  ;; TODO: Uncomment when emacs-overlay is able to rebuild latest melpa (after 2024-10-19)
+  (use-package clang-format)
+    ;; :hook (c-mode . clang-format-on-save-mode)
+    ;; :config
+    ;; (setq clang-format-on-save-mode t))
 
   ;; Haskell
   (use-package lsp-haskell)
