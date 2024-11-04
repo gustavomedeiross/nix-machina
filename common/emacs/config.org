@@ -386,6 +386,8 @@ To be able to use fuzzy searching in vertico buffers
   (use-package doom-themes
     :config
     (load-theme 'doom-ir-black t))
+
+  (use-package gruber-darker-theme)
 #+end_src
 
 ** Zoom
