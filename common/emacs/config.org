@@ -571,6 +571,7 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :hook (dune-mode . dune-format-on-save-mode))
 
   (use-package utop
+    :defer t
     :config
     (setq utop-command "dune utop . -- -emacs"))
 
@@ -581,11 +582,10 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :config
     (setq-default c-basic-offset 4))
 
-  ;; TODO: Uncomment when emacs-overlay is able to rebuild latest melpa (after 2024-10-19)
-  (use-package clang-format)
-    ;; :hook (c-mode . clang-format-on-save-mode)
-    ;; :config
-    ;; (setq clang-format-on-save-mode t))
+  (use-package clang-format
+    :hook (c-mode . clang-format-on-save-mode)
+    :config
+    (setq clang-format-on-save-mode t))
 
   ;; Haskell
   (use-package lsp-haskell)
