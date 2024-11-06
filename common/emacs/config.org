@@ -570,6 +570,10 @@ Useful to zoom to the current window when you have multiple splits. This is setu
   (use-package dune-format
     :hook (dune-mode . dune-format-on-save-mode))
 
+  (use-package
+    :config
+    (setq utop-command "opam exec -- dune utop . -- -emacs"))
+
   ;; C
   (use-package c-mode
     :mode ("\\.c$" "\\.h$")
