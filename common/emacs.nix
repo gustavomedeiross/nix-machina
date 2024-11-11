@@ -3,8 +3,10 @@
 let
   # not yet available in MELPA: https://github.com/copilot-emacs/copilot.el/issues/120
   copilot-el =
-    let rev = "edf517a57f539eb41eaa2f92c6752538f3a62b72";
-    in pkgs.emacsPackages.trivialBuild {
+    let
+      rev = "edf517a57f539eb41eaa2f92c6752538f3a62b72";
+    in
+    pkgs.emacsPackages.trivialBuild {
       pname = "copilot";
       version = rev;
 
@@ -15,7 +17,15 @@ let
         sha256 = "sha256-53BGX2llkrM5mDmFSVe+O/Vo4F2gDJTFh/4TqBuQme8=";
       };
 
-      packageRequires = with pkgs; with emacsPackages; [ dash editorconfig f s ];
+      packageRequires =
+        with pkgs;
+        with emacsPackages;
+        [
+          dash
+          editorconfig
+          f
+          s
+        ];
 
       meta = {
         description = "An unofficial Copilot plugin for Emacs";
