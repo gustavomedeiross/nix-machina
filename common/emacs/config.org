@@ -721,6 +721,10 @@ For now, this is disabled by default.
     :config
     (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 
+  (use-package ob-mermaid
+    :config
+    (setq ob-mermaid-cli-path "~/.nix-profile/bin/mmdc"))
+
   (use-package org-roam
     :custom
     (org-roam-directory "~/keep/org/roam")
