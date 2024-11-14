@@ -29,7 +29,6 @@ with pkgs; [
   jq
   libgccjit
   libtool
-  mermaid-cli
   nixfmt-rfc-style
   nodePackages.npm
   nodejs

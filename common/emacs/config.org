@@ -728,7 +728,7 @@ For now, this is disabled by default.
 
   (use-package ob-mermaid
     :config
-    (setq ob-mermaid-cli-path "~/.nix-profile/bin/mmdc"))
+    (setq ob-mermaid-cli-path "~/.npm-packages/bin/mmdc"))
 
   (use-package org-roam
     :custom
