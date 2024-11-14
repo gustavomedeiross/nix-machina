@@ -670,9 +670,13 @@ For now, this is disabled by default.
             ("s" "Slipbox" entry  (file "~/keep/org/slipbox.org")
              "* %?\n")))
 
+    ;; Org Babel
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((mermaid . t)))
+
+    ;; Don't ask for confirmation when executing babel src blocks
+    (setq org-confirm-babel-evaluate nil)
 
     :general
     (general-define-key
