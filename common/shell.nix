@@ -34,6 +34,9 @@
     # Add local scripts to PATH
     export PATH="$HOME/.local/bin:$PATH"
 
+    # Mactex
+    export PATH="/Library/TeX/texbin:$PATH"
+
     # Load computer specific configurations
     source "$HOME/.local/zsh.sh"
 
