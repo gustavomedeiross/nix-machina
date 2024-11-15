@@ -1,8 +1,9 @@
 { pkgs }:
 
 with pkgs; with ocamlPackages; [
-    ocamlformat
-    ocaml
     dune_3
+    ocaml
+    ocamlformat
     ocaml-lsp
+    utop
 ]
