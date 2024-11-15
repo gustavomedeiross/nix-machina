@@ -13,6 +13,11 @@
     nix-direnv.enable = true;
   };
 
+  programs.opam = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   # TODO: find out a cleaner way to do that
   home.file = {
     # emacs
@@ -26,10 +31,10 @@
     # ocaml
     ".ocamlinit" = {
       text = ''
-      #use "topfind";;
-      #require "lwt";;
-      #require "ptime";;
-      #require "uuidm";;
+        #use "topfind";;
+        #require "lwt";;
+        #require "ptime";;
+        #require "uuidm";;
       '';
     };
   };
