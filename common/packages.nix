@@ -2,8 +2,9 @@
 
 let
   emacs = import ./emacs.nix { inherit pkgs; };
+  ocamlpkgs = import ./ocaml.nix { inherit pkgs; };
 in
-with pkgs; [
+with pkgs; ocamlpkgs ++ [
   alacritty
   awscli
   aws-vault
@@ -14,7 +15,6 @@ with pkgs; [
   coreutils
   docker
   docker-compose
-  dune_3
   emacs
   fira-code
   fzf

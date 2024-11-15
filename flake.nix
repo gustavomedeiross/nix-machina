@@ -12,6 +12,11 @@
     };
     # Remove once this is done: https://github.com/nix-community/home-manager/issues/1341
     mac-app-util.url = "github:hraban/mac-app-util";
+
+    ocaml-overlay = {
+      url = "github:nix-ocaml/nix-overlays";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -21,6 +26,7 @@
       darwin,
       home-manager,
       mac-app-util,
+      ocaml-overlay,
     }:
     let
       overlays = [
@@ -29,6 +35,7 @@
             url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
           }
         ))
+        ocaml-overlay.overlays.default
       ];
     in
     {
