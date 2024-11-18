@@ -10,6 +10,11 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs-overlay = {
+      # TODO: remove commit when emacsql error with org-roam is fixed
+      url = "github:nix-community/emacs-overlay/ed670c7246dd4bfd24e50939eb5d9bcaa95e638b";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Remove once this is done: https://github.com/nix-community/home-manager/issues/1341
     mac-app-util.url = "github:hraban/mac-app-util";
   };
@@ -18,17 +23,14 @@
     inputs@{
       self,
       nixpkgs,
-      darwin,
       home-manager,
+      darwin,
+      emacs-overlay,
       mac-app-util,
     }:
     let
       overlays = [
-        (import (
-          builtins.fetchTarball {
-            url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-          }
-        ))
+        emacs-overlay.overlay
       ];
     in
     {
