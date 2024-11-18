@@ -478,15 +478,20 @@ Useful to zoom to the current window when you have multiple splits. This is setu
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
-    :config
-    (lsp-enable-which-key-integration t)
-    (setq lsp-enable-file-watchers t)
-    (setq lsp-file-watch-threshold nil)
     :general
     (general-define-key
      :states 'normal
      :keymaps '(normal override)
-     "g r" '(lsp-find-references :which-key "Find usages of code")))
+     "g r" '(lsp-find-references :which-key "Find usages of code"))
+    :config
+    (lsp-enable-which-key-integration t)
+    (setq lsp-enable-file-watchers t)
+    (setq lsp-file-watch-threshold nil)
+    (lsp-register-client
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection '("opam" "exec" "--" "ocamllsp"))
+      :major-modes '(camel-mode tuareg-mode reason-mode)
+      :server-id 'ocamlmerlin-lsp)))
 
   (use-package lsp-ui
     :hook (lsp-mode . lsp-ui-mode)
@@ -552,13 +557,7 @@ Useful to zoom to the current window when you have multiple splits. This is setu
 
   ;; OCaml
   (use-package tuareg
-    :hook (tuareg-mode . lsp-deferred)
-    :config
-    (lsp-register-client
-     (make-lsp-client
-      :new-connection (lsp-stdio-connection '("opam" "exec" "--" "ocamllsp"))
-      :major-modes '(tuareg-mode)
-      :server-id 'ocamlmerlin-lsp)))
+    :hook (tuareg-mode . lsp-deferred))
 
   (use-package ocamlformat
     :defer t
@@ -574,6 +573,13 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :defer t
     :config
     (setq utop-command "dune utop . -- -emacs"))
+
+  ;; ReasonML
+  (use-package reason-mode
+    :hook
+    (reason-mode . lsp-deferred)
+    (reason-mode . (lambda ()
+                     (add-hook 'before-save-hook 'refmt-before-save))))
 
   ;; C
   (use-package c-mode
