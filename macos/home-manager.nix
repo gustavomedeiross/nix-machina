@@ -33,7 +33,7 @@ in
     upgrade = true;
   };
   homebrew.brewPrefix = "/opt/homebrew/bin";
-  homebrew.brews = [ "lilypond" ];
+  homebrew.brews = pkgs.callPackage ./brews.nix { };
   homebrew.casks = pkgs.callPackage ./casks.nix { };
   homebrew.masApps = { };
 

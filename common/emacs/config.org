@@ -623,13 +623,12 @@ Useful to zoom to the current window when you have multiple splits. This is setu
 For now, this is disabled by default.
 
 #+begin_src emacs-lisp
-  (use-package copilot
-    :ensure nil
-    ;; Disable copilot-mode by default for now
-    ;; :hook (prog-mode . 'copilot-mode)
-    :config
-    (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "C-RET") 'copilot-accept-completion))
+  ;; (use-package copilot
+  ;;   :ensure nil
+  ;;   :hook (prog-mode . 'copilot-mode)
+  ;;   :config
+  ;;   (define-key copilot-completion-map (kbd "C-<return>") 'copilot-accept-completion)
+  ;;   (define-key copilot-completion-map (kbd "C-RET") 'copilot-accept-completion))
 #+end_src
 
 * Org

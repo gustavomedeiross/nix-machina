@@ -80,7 +80,7 @@ in
     epkgs.diminish
     epkgs.general
     epkgs.vterm
-    copilot-el
+    # copilot-el
   ];
 
   # Optionally override derivations.
