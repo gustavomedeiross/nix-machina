@@ -18,7 +18,6 @@ with pkgs; ocamlpkgs ++ [
   emacs
   fira-code
   fzf
-  gcc
   gh
   google-cloud-sdk
   graphviz
@@ -27,7 +26,6 @@ with pkgs; ocamlpkgs ++ [
   htop
   imagemagick
   jq
-  libgccjit
   libtool
   nixfmt-rfc-style
   nodePackages.npm
@@ -38,6 +36,7 @@ with pkgs; ocamlpkgs ++ [
   rclone
   ripgrep
   tailscale
+  tailwindcss
   tmux
   unrar
   unzip
