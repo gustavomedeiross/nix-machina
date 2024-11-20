@@ -31,12 +31,6 @@
     # alias for managing my dotfiles with a git bare repository
     alias dotfiles="/usr/bin/git --git-dir=/$HOME/.dotfiles/ --work-tree=/$HOME"
 
-    # Add local scripts to PATH
-    export PATH="$HOME/.local/bin:$PATH"
-
-    # Mactex
-    export PATH="/Library/TeX/texbin:$PATH"
-
     # Load computer specific configurations
     source "$HOME/.local/zsh.sh"
 

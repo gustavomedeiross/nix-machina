@@ -18,6 +18,13 @@
     enableZshIntegration = true;
   };
 
+  home.sessionPath = [
+    # Add local scripts to PATH
+    "$HOME/.local/bin"
+    # Basictex
+    "/Library/TeX/texbin"
+  ];
+
   # TODO: find out a cleaner way to do that
   home.file = {
     # emacs
