@@ -846,6 +846,7 @@ TODO: create custom functions using ~string-inflection~
 #+begin_src emacs-lisp
   (use-package string-inflection)
 #+end_src
+
 ** Slack
 #+begin_src emacs-lisp
   (use-package ox-slack)
@@ -856,12 +857,19 @@ TODO: create custom functions using ~string-inflection~
     (org-slack-export-to-clipboard-as-slack))
 
 #+end_src
-** ChatGPT
 
+** ChatGPT
 #+begin_src emacs-lisp
   ;; (use-package chatgpt)
 #+end_src
 
+** Discord
+Discord rich presence
+
+#+begin_src emacs-lisp
+  (use-package elcord
+    :init (elcord-mode))
+#+end_src
 * Fun
 ** Lilypond
 LilyPond mode, to produce music sheets on a text-based way.
