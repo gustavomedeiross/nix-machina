@@ -867,8 +867,7 @@ TODO: create custom functions using ~string-inflection~
 Discord rich presence
 
 #+begin_src emacs-lisp
-  (use-package elcord
-    :init (elcord-mode))
+  (use-package elcord)
 #+end_src
 * Fun
 ** Lilypond
