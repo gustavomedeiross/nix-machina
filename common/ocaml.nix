@@ -9,7 +9,7 @@ with ocamlPackages;
   ocaml-lsp
   odoc
   # TODO: Fatal error: unknown C primitive `caml_unix_write_bigarray' error on latest install
-  utop
+  # utop
 
   # TODO: ideally we would also install the main libraries that I want to have with nix itself
   # so we don't need to rely on opam

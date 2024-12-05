@@ -25,6 +25,7 @@ with pkgs; ocamlpkgs ++ [
   home-manager
   htop
   imagemagick
+  inkscape
   jq
   libtool
   nixfmt-rfc-style
