@@ -679,8 +679,7 @@ For now, this is disabled by default.
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((mermaid .t)
-       (latex . t)
-       (lilypond t)))
+       (latex . t)))
 
     ;; Don't ask for confirmation when executing babel src blocks
     (setq org-confirm-babel-evaluate nil)
@@ -871,7 +870,8 @@ Discord rich presence
 #+begin_src emacs-lisp
   (use-package elcord)
 #+end_src
-* Fun
+
+* Music
 ** Lilypond
 LilyPond mode, to produce music sheets on a text-based way.
 
@@ -883,6 +883,37 @@ LilyPond repo and feed them my site-lisp directory.
     :ensure nil
     :load-path "~/.emacs.d/site-lisp"
     :mode ("\\.ly\\'" . LilyPond-mode))
+
+  (use-package ob-lilypond
+    :commands (org-babel-execute:lilypond)
+    :custom
+    (org-babel-lilypond-commands '("/opt/homebrew/bin/lilypond" "open" "open"))
+    ;; credits: https://github.com/alexpeits/emacs.d/blob/0db95715b558b586b19beeb14b06659fd053bfd2/configuration.org#L4681
+    :config
+    (defun gm/org-lilypond-preprocess-block (args)
+      (let* ((defaults (string-join
+                        '("\\layout{"
+                          "#(layout-set-staff-size 25)"
+                          "}"
+                          "\\paper{"
+                          "indent=0\\mm"
+                          "line-width=200\\mm"
+                          "oddFooterMarkup=##f"
+                          "oddHeaderMarkup=##f"
+                          "bookTitleMarkup=##f"
+                          "scoreTitleMarkup=##f"
+                          "}"
+                          )
+                        "\n"))
+             (body (car args))
+             (newbody (format "%s\n%s" defaults body))
+             (params (cadr args)))
+        (list newbody params)))
+    (advice-add 'org-babel-execute:lilypond
+                :filter-args
+                'gm/org-lilypond-preprocess-block))
+
+
 #+end_src
 
 * Functions
