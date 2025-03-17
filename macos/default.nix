@@ -5,14 +5,11 @@
     ./home-manager.nix
   ];
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-
   # Setup user, packages, programs
   nix = {
     package = pkgs.nixVersions.latest;
     settings.trusted-users = [ "@admin" "gustavo" ];
-    gc.user = "root";
+    enable = true;
 
     # Turn this on to make command line easier
     extraOptions = ''
@@ -29,10 +26,10 @@
 
   programs = { };
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system = {
-    stateVersion = 5;
+    stateVersion = 6;
     defaults = {
       LaunchServices = {
         LSQuarantine = false;
