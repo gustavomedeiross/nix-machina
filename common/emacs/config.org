@@ -722,8 +722,16 @@ For now, this is disabled by default.
              ((agenda "" nil)
               (todo "INTR" nil)
               (todo "PROG" nil)
-              (todo "NEXT" nil))
+              (todo "NEXT" nil)
+              ;; I would really like to improve this into something better in the future
+              ;; maybe something with org-super-agenda with org-ql
+              (tags "p"
+                    ((org-agenda-files '("~/keep/org/alto.org"))
+                     (org-agenda-overriding-header "\nSaxophone Weekly Practice 🎷"))))
              nil))))
+
+  ;; Useful for querying org files, but can also be used as an alternative to org-agenda.
+  (use-package org-ql)
 
   (use-package org-bullets
     :after org
