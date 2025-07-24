@@ -6,6 +6,7 @@
   "brave-browser"
   "discord"
   "dropbox"
+  "frescobaldi"
   "homebrew/cask/docker"
   "insomnia"
   "linear-linear"
