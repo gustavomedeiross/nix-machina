@@ -7,7 +7,7 @@
   "discord"
   "dropbox"
   "frescobaldi"
-  "homebrew/cask/docker"
+  "docker"
   "insomnia"
   "linear-linear"
   "mactex"
