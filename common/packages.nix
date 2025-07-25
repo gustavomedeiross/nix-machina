@@ -3,8 +3,9 @@
 let
   emacs = import ./emacs.nix { inherit pkgs; };
   ocamlpkgs = import ./ocaml.nix { inherit pkgs; };
+  fluidsynth = import ./fluidsynth.nix { inherit pkgs; };
 in
-with pkgs; ocamlpkgs ++ [
+with pkgs; ocamlpkgs ++ fluidsynth ++ [
   alacritty
   awscli
   aws-vault
