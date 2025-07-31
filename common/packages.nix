@@ -4,6 +4,7 @@ let
   emacs = import ./emacs.nix { inherit pkgs; };
   ocamlpkgs = import ./ocaml.nix { inherit pkgs; };
   fluidsynth = import ./fluidsynth.nix { inherit pkgs; };
+  git-remote-dropbox = import ./git-remote-dropbox.nix { inherit pkgs; };
 in
 with pkgs; ocamlpkgs ++ fluidsynth ++ [
   alacritty
@@ -20,6 +21,7 @@ with pkgs; ocamlpkgs ++ fluidsynth ++ [
   fira-code
   fzf
   gh
+  git-remote-dropbox
   google-cloud-sdk
   graphviz
   haproxy
