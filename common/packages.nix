@@ -26,6 +26,7 @@ with pkgs; ocamlpkgs ++ fluidsynth ++ [
   graphviz
   haproxy
   home-manager
+  hledger
   htop
   imagemagick
   inkscape

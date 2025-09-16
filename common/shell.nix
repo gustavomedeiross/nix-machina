@@ -37,6 +37,8 @@
     # https://codeberg.org/akib/emacs-eat
     [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
     source "$EAT_SHELL_INTEGRATION_DIR/zsh"
+
+    export LEDGER_FILE="$HOME/org/finances.journal"
                               '';
 
     oh-my-zsh = {
