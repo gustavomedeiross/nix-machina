@@ -204,6 +204,7 @@ Emacs configurations, not related to any packages
 ** Shells
 #+begin_src emacs-lisp
   (use-package eshell
+    :ensure nil
     :hook
     (eshell-mode . (lambda ()
                      (display-line-numbers-mode 0)
@@ -281,6 +282,7 @@ Persist history over Emacs restarts. Vertico sorts by history position:
 
 #+begin_src emacs-lisp
 (use-package savehist
+  :ensure nil
   :init
   (savehist-mode))
 #+end_src
@@ -583,6 +585,7 @@ Useful to zoom to the current window when you have multiple splits. This is setu
 
   ;; C
   (use-package c-mode
+    :ensure nil
     :mode ("\\.c$" "\\.h$")
     :hook (c-mode . lsp-deferred)
     :config
@@ -841,9 +844,7 @@ For now, this is disabled by default.
                          :props '(:finalize find-file))))
 
   (use-package tex-site
-    :straight (auctex :host github
-                      :repo "emacsmirror/auctex"
-                      :files (:defaults (:exclude "*.el.in")))
+    :ensure nil
     :defer t
     :config
     (setq TeX-auto-save nil))
@@ -893,6 +894,7 @@ LilyPond repo and feed them my site-lisp directory.
     :mode ("\\.ly\\'" . LilyPond-mode))
 
   (use-package ob-lilypond
+    :ensure nil
     :commands (org-babel-execute:lilypond)
     :custom
     (org-babel-lilypond-commands '("/opt/homebrew/bin/lilypond" "open" "open"))
