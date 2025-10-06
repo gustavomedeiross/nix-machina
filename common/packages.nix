@@ -33,7 +33,6 @@ with pkgs; ocamlpkgs ++ fluidsynth ++ [
   jq
   libtool
   nixfmt-rfc-style
-  nodePackages.npm
   nodejs
   openssh
   pandoc

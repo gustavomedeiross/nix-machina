@@ -29,6 +29,7 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   system = {
+    primaryUser = "gustavo";
     stateVersion = 6;
     defaults = {
       LaunchServices = {

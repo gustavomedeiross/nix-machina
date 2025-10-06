@@ -14,10 +14,6 @@ let
   };
 in
 {
-  imports = [
-    <home-manager/nix-darwin>
-  ];
-
   users.users.gustavo = {
     name = "gustavo";
     home = "/Users/gustavo";

@@ -11,8 +11,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay = {
-      # TODO: remove commit when emacsql error with org-roam is fixed
-      url = "github:nix-community/emacs-overlay/ed670c7246dd4bfd24e50939eb5d9bcaa95e638b";
+      url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Remove once this is done: https://github.com/nix-community/home-manager/issues/1341
@@ -39,6 +38,7 @@
           system = "aarch64-darwin";
           modules = [
             { nixpkgs.overlays = overlays; }
+            home-manager.darwinModules.home-manager
             mac-app-util.darwinModules.default
             ./macos
           ];

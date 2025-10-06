@@ -54,7 +54,11 @@ in
   defaultInitFile = true;
 
   # Package is optional, defaults to pkgs.emacs
-  package = pkgs.emacs-unstable;
+  # TODO: remove "withNativeCompilation = false"
+  # package = pkgs.emacs-unstable;
+  package = pkgs.emacs-unstable.override {
+    withNativeCompilation = false;
+  };
 
   # By default emacsWithPackagesFromUsePackage will only pull in
   # packages with `:ensure`, `:ensure t` or `:ensure <package name>`.

@@ -4,7 +4,7 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     autosuggestion.enable = true;
     enableCompletion = true;
 
@@ -12,7 +12,7 @@
       size = 10000;
     };
 
-    initExtra = ''
+    initContent = ''
     DISABLE_UNTRACKED_FILES_DIRTY="true"
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#877C70"
 
