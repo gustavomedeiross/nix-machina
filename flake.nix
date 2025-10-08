@@ -16,6 +16,10 @@
     };
     # Remove once this is done: https://github.com/nix-community/home-manager/issues/1341
     mac-app-util.url = "github:hraban/mac-app-util";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -26,10 +30,12 @@
       darwin,
       emacs-overlay,
       mac-app-util,
+      rust-overlay,
     }:
     let
       overlays = [
         emacs-overlay.overlay
+        rust-overlay.overlays.default
       ];
     in
     {

@@ -221,7 +221,28 @@
         "emacs-overlay": "emacs-overlay",
         "home-manager": "home-manager",
         "mac-app-util": "mac-app-util",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_4",
+        "rust-overlay": "rust-overlay"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1759890791,
+        "narHash": "sha256-KN1xkrQ4x6u8plgg43ZiYbQmESxeCKKOzALKjqbn4LM=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "74fcbc183aa6685f86008606bb7824bf2f40adbd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "systems": {

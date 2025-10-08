@@ -3,10 +3,11 @@
 let
   emacs = import ./emacs.nix { inherit pkgs; };
   ocamlpkgs = import ./ocaml.nix { inherit pkgs; };
+  rustpkgs = import ./rust.nix { inherit pkgs; };
   fluidsynth = import ./fluidsynth.nix { inherit pkgs; };
   git-remote-dropbox = import ./git-remote-dropbox.nix { inherit pkgs; };
 in
-with pkgs; ocamlpkgs ++ fluidsynth ++ [
+with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   alacritty
   awscli
   aws-vault
