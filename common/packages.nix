@@ -24,6 +24,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   gh
   git-remote-dropbox
   google-cloud-sdk
+  go-task
   graphviz
   haproxy
   home-manager
