@@ -21,6 +21,8 @@
   home.sessionPath = [
     # Add local scripts to PATH
     "$HOME/.local/bin"
+    # Cargo binaries
+    "$HOME/.cargo/bin"
     # Basictex
     "/Library/TeX/texbin"
   ];
