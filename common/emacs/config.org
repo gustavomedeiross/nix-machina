@@ -437,7 +437,10 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :config
     (general-define-key
      :keymaps 'transient-base-map
-     "<escape>" 'transient-quit-one))
+     "<escape>" 'transient-quit-one)
+    ;; Make RET open the actual worktree file instead of the index version
+    (define-key magit-file-section-map (kbd "RET") #'magit-diff-visit-worktree-file)
+    (define-key magit-hunk-section-map (kbd "RET") #'magit-diff-visit-worktree-file))
 
   (use-package forge
     :after magit

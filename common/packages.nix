@@ -9,6 +9,7 @@ let
 in
 with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   alacritty
+  asdf-vm
   awscli
   aws-vault
   borgbackup
