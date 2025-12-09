@@ -19,7 +19,6 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   coreutils
   docker
   docker-compose
-  elixir-ls
   emacs
   fira-code
   fzf

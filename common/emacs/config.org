@@ -608,7 +608,9 @@ Useful to zoom to the current window when you have multiple splits. This is setu
 
   ;; Elixir
   (use-package elixir-mode
-    :hook (elixir-mode . lsp-deferred))
+    :hook (elixir-mode . lsp-deferred)
+    :init
+    (setq lsp-elixir-server-command '("~/.asdf/shims/elixir-ls")))
 
   ;; Rust
   (use-package rust-mode
