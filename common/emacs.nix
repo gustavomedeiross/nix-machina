@@ -32,6 +32,66 @@ let
         license = pkgs.lib.licenses.mit;
       };
     };
+
+  inheritenv-el = pkgs.emacsPackages.trivialBuild {
+    pname = "inheritenv";
+    version = "master";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "purcell";
+      repo = "inheritenv";
+      rev = "master";
+      sha256 = "0ghd8iy9g2h8pw3drrxhwdswam8xiwkq59wrqhr38famxawkncxb";
+    };
+
+    meta = {
+      description = "Make temp buffers inherit buffer-local environment variables";
+      license = pkgs.lib.licenses.gpl3;
+    };
+  };
+
+  monet-el = pkgs.emacsPackages.trivialBuild {
+    pname = "monet";
+    version = "main";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "stevemolitor";
+      repo = "monet";
+      rev = "main";
+      sha256 = "1d2js4q6b83vxxf74axa4srh0w8zmlxl9vwfd71r5s4p3whl7vnx";
+    };
+
+    packageRequires = with pkgs.emacsPackages; [
+      websocket
+    ];
+
+    meta = {
+      description = "Monet IDE integration for Claude Code";
+      license = pkgs.lib.licenses.gpl3;
+    };
+  };
+
+  claude-code-el = pkgs.emacsPackages.trivialBuild {
+    pname = "claude-code";
+    version = "main";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "stevemolitor";
+      repo = "claude-code.el";
+      rev = "main";
+      sha256 = "0z77nxazkw08pmqam2z27a56s9nyp72a1vvc0ba3vgcwfkjx0v81";
+    };
+
+    packageRequires = with pkgs.emacsPackages; [
+      transient
+      inheritenv-el
+    ];
+
+    meta = {
+      description = "Emacs integration for Claude Code CLI";
+      license = pkgs.lib.licenses.gpl3;
+    };
+  };
 in
 
 (pkgs.emacsWithPackagesFromUsePackage {
@@ -81,6 +141,9 @@ in
     epkgs.general
     epkgs.vterm
     # copilot-el
+    inheritenv-el
+    monet-el
+    claude-code-el
   ];
 
   # Optionally override derivations.

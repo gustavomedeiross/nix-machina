@@ -627,6 +627,38 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     (setq typescript-indent-level 2))
 #+end_src
 
+** Claude Code
+Integration with Claude Code CLI for AI-assisted coding.
+
+#+begin_src emacs-lisp
+  (use-package inheritenv
+    :ensure nil)
+
+  (use-package monet
+    :ensure nil
+    :demand t)
+
+  (use-package claude-code
+    :ensure nil
+    :after monet
+    :config
+    (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
+    (monet-mode 1)
+    (claude-code-mode)
+    (setq claude-code-terminal-backend 'eat)
+    :bind-keymap ("C-c c" . claude-code-command-map)
+    :bind
+    (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode))
+    :general
+    (general-define-key
+     :states 'normal
+     :keymaps '(normal visual emacs override)
+     :prefix "SPC"
+     "a c" '(claude-code :which-key "Claude Code start")
+     "a s" '(claude-code-send-region :which-key "Claude Code send region")
+     "a q" '(claude-code-quit :which-key "Claude Code quit")))
+#+end_src
+
 ** Copilot
 For now, this is disabled by default.
 
@@ -960,5 +992,11 @@ General functions that I use for random things
     ret)
 
   (advice-add 'find-file-at-point :filter-return #'gm/find-file-at-point-goto-line)
+
+  (defun gm/nix-rebuild ()
+    "Rebuild nix-machina configuration."
+    (interactive)
+    (let ((default-directory "~/nix-machina/"))
+      (compile "./bin/build.sh")))
 #+end_src
 
