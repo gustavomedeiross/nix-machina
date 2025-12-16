@@ -8,7 +8,6 @@ let
   git-remote-dropbox = import ./git-remote-dropbox.nix { inherit pkgs; };
 in
 with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
-  alacritty
   asdf-vm
   awscli
   aws-vault

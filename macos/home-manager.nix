@@ -38,7 +38,14 @@ in
     users.gustavo =
       { pkgs, lib, ... }:
       lib.recursiveUpdate common-hm-config {
-        programs = { };
+        programs = {
+          alacritty = {
+            enable = true;
+            settings = {
+              window.resize_increments = false;
+            };
+          };
+        };
         home.enableNixpkgsReleaseCheck = false;
         home.packages = pkgs.callPackage ./packages.nix { };
         home.stateVersion = "22.11";
