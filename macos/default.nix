@@ -118,6 +118,9 @@
         # Toggle between floating and tiling
         "alt-shift-space" = "layout floating tiling";
 
+        # Close window
+        "alt-shift-c" = "close";
+
         # Service mode for resize/other operations
         "alt-shift-semicolon" = "mode service";
       };
