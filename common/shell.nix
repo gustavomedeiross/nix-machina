@@ -43,7 +43,7 @@
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "asdf" "git" "direnv" "macos" "command-not-found" "vi-mode" "shrink-path" ];
+      plugins = [ "git" "direnv" "macos" "command-not-found" "vi-mode" "shrink-path" ];
       theme = "robbyrussell";
     };
 
