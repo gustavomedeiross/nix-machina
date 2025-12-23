@@ -13,6 +13,9 @@
     };
 
     initContent = ''
+    # asdf shims
+    export PATH="$HOME/.asdf/shims:$PATH"
+
     DISABLE_UNTRACKED_FILES_DIRTY="true"
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#877C70"
 
