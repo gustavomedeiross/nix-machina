@@ -34,12 +34,14 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   imagemagick
   inkscape
   jq
+  just
   libtool
   nixfmt-rfc-style
   nodejs
   openssh
   pandoc
   postgresql
+  pueue
   rclone
   ripgrep
   tailscale
