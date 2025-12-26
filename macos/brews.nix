@@ -6,4 +6,5 @@
   "libffi"
   # others
   "lilypond"
+  "pueue"
 ]

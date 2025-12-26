@@ -41,7 +41,6 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   openssh
   pandoc
   postgresql
-  pueue
   rclone
   ripgrep
   tailscale
