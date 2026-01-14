@@ -36,6 +36,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   jq
   just
   libtool
+  mermaid-cli
   nixfmt-rfc-style
   nodejs
   openssh

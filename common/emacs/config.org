@@ -556,6 +556,11 @@ Useful to zoom to the current window when you have multiple splits. This is setu
   (use-package json-mode)
   (use-package yaml-mode)
 
+  (use-package mermaid-mode
+    :mode "\\.mmd\\'"
+    :config
+    (setq mermaid-mmdc-location "mmdc"))
+
   ;; Nix
   (use-package nix-mode
     :mode "\\.nix\\'")
@@ -786,7 +791,7 @@ For now, this is disabled by default.
 
   (use-package ob-mermaid
     :config
-    (setq ob-mermaid-cli-path "~/.npm-packages/bin/mmdc"))
+    (setq ob-mermaid-cli-path "mmdc"))
 
   (use-package org-roam
     :custom
