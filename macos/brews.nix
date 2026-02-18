@@ -7,4 +7,5 @@
   # others
   "lilypond"
   "pueue"
+  "terminal-notifier"
 ]
