@@ -50,5 +50,7 @@
 
   home.shellAliases = {
     start-fluidsynth = "fluidsynth -a coreaudio -m coremidi ${pkgs.soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2";
+    claude-personal = "CLAUDE_CONFIG_DIR=$HOME/.claude-personal command claude";
+    claude-bluecode = "CLAUDE_CONFIG_DIR=$HOME/.claude-bluecode command claude";
   };
 }
