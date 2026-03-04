@@ -47,6 +47,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   tailscale
   tailwindcss
   tmux
+  unison-ucm
   unrar
   unzip
   vscode

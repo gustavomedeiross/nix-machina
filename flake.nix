@@ -20,6 +20,10 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    unison-lang = {
+      url = "github:ceedubs/unison-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -31,11 +35,13 @@
       emacs-overlay,
       mac-app-util,
       rust-overlay,
+      unison-lang,
     }:
     let
       overlays = [
         emacs-overlay.overlay
         rust-overlay.overlays.default
+        unison-lang.overlay
       ];
     in
     {
