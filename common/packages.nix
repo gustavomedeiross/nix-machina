@@ -41,6 +41,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   nodejs
   openssh
   pandoc
+  poppler_utils
   postgresql
   rclone
   ripgrep
