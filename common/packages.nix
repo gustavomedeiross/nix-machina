@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, ... }:
 
 let
   emacs = import ./emacs.nix { inherit pkgs; };
@@ -8,6 +8,7 @@ let
   git-remote-dropbox = import ./git-remote-dropbox.nix { inherit pkgs; };
 in
 with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
+  agenix
   asdf-vm
   awscli
   aws-vault

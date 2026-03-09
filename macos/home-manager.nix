@@ -36,8 +36,12 @@ in
   home-manager = {
     useGlobalPkgs = true;
     users.gustavo =
-      { pkgs, lib, ... }:
+      { pkgs, lib, config, ... }:
       lib.recursiveUpdate common-hm-config {
+        age = {
+          identityPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+          secrets.anthropic-api-key.file = ../secrets/anthropic-api-key.age;
+        };
         programs = {
           alacritty = {
             enable = true;
@@ -60,6 +64,7 @@ in
 
     sharedModules = [
       inputs.mac-app-util.homeManagerModules.default
+      inputs.agenix.homeManagerModules.default
     ];
   };
 }

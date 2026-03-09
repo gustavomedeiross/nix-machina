@@ -13,6 +13,8 @@
     };
 
     initContent = ''
+    export ANTHROPIC_API_KEY="$(cat "${config.age.secrets.anthropic-api-key.path}")"
+
     # asdf shims
     export PATH="$HOME/.asdf/shims:$PATH"
 

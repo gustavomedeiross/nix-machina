@@ -24,6 +24,10 @@
       url = "github:ceedubs/unison-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -36,12 +40,14 @@
       mac-app-util,
       rust-overlay,
       unison-lang,
+      agenix,
     }:
     let
       overlays = [
         emacs-overlay.overlay
         rust-overlay.overlays.default
         unison-lang.overlay
+        agenix.overlays.default
       ];
     in
     {
@@ -60,6 +66,7 @@
               home-manager
               nixpkgs
               mac-app-util
+              agenix
               ;
           };
         };
