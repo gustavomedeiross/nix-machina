@@ -539,10 +539,13 @@ Useful to zoom to the current window when you have multiple splits. This is setu
     :config
     (global-flycheck-mode))
 
-  (use-package flycheck-posframe
+  (use-package flyover
     :after flycheck
-    :config
-    (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
+    :hook (flycheck-mode . flyover-mode)
+    :custom
+    (flyover-checkers '(flycheck))
+    (flyover-levels '(error warning info))
+    (flyover-use-theme-colors t))
     #+end_src
 ** Direnv
 #+begin_src emacs-lisp
