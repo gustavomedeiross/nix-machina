@@ -8,6 +8,7 @@
   "dropbox"
   "frescobaldi"
   "docker"
+  "godot"
   "insomnia"
   "linear-linear"
   "mactex"
