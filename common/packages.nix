@@ -46,6 +46,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   postgresql
   rclone
   ripgrep
+  texliveMedium
   tailscale
   tailwindcss
   tmux
