@@ -23,6 +23,8 @@
     "$HOME/.local/bin"
     # Cargo binaries
     "$HOME/.cargo/bin"
+    # npm global packages
+    "$HOME/.npm-packages/bin"
     # Basictex
     "/Library/TeX/texbin"
   ];
