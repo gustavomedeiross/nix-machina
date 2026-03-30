@@ -18,6 +18,9 @@
     # asdf shims
     export PATH="$HOME/.asdf/shims:$PATH"
 
+    # npm global packages
+    export PATH="$HOME/.npm-packages/bin:$PATH"
+
     DISABLE_UNTRACKED_FILES_DIRTY="true"
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#877C70"
 

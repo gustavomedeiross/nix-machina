@@ -18,6 +18,12 @@
     enableZshIntegration = true;
   };
 
+  # TODO: home.sessionPath is broken on nix-darwin + zsh — nix-darwin's
+  # /etc/zshenv hard-resets PATH after hm-session-vars.sh sets it, and the
+  # guard prevents it from running again. These entries have no effect.
+  # Use shell.nix initContent instead.
+  # See: https://github.com/nix-community/home-manager/issues/3417
+  #      https://github.com/nix-community/home-manager/issues/2991
   home.sessionPath = [
     # Add local scripts to PATH
     "$HOME/.local/bin"
