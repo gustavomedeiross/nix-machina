@@ -11,7 +11,6 @@
   "godot"
   "insomnia"
   "linear-linear"
-  "mactex"
   "postman"
   "slack"
   "spotify"

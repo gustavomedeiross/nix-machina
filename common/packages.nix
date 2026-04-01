@@ -6,6 +6,12 @@ let
   rustpkgs = import ./rust.nix { inherit pkgs; };
   fluidsynth = import ./fluidsynth.nix { inherit pkgs; };
   git-remote-dropbox = import ./git-remote-dropbox.nix { inherit pkgs; };
+  texlive = pkgs.texliveBasic.withPackages (ps: with ps; [
+    latexmk
+    collection-fontsrecommended
+    collection-latexrecommended
+    collection-latexextra
+  ]);
 in
 with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   agenix
@@ -46,7 +52,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   postgresql
   rclone
   ripgrep
-  texliveMedium
+  texlive
   tailscale
   tailwindcss
   tmux

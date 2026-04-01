@@ -31,8 +31,6 @@
     "$HOME/.cargo/bin"
     # npm global packages
     "$HOME/.npm-packages/bin"
-    # Basictex
-    "/Library/TeX/texbin"
   ];
 
   # TODO: find out a cleaner way to do that
