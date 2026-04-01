@@ -11,6 +11,7 @@ let
     collection-fontsrecommended
     collection-latexrecommended
     collection-latexextra
+    collection-fontsextra
   ]);
 in
 with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
