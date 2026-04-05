@@ -14,6 +14,7 @@
 
     initContent = ''
     export ANTHROPIC_API_KEY="$(cat "${config.age.secrets.anthropic-api-key.path}")"
+    export BORG_PASSPHRASE="$(cat "$(getconf DARWIN_USER_TEMP_DIR)/agenix/borg-passphrase")"
 
     # asdf shims
     export PATH="$HOME/.asdf/shims:$PATH"

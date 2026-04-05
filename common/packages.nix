@@ -20,6 +20,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   awscli
   aws-vault
   borgbackup
+  borgmatic
   chamber
   cmake
   clang-tools
@@ -45,6 +46,7 @@ with pkgs; ocamlpkgs ++ rustpkgs ++ fluidsynth ++ [
   just
   libtool
   mermaid-cli
+  msmtp
   nixfmt-rfc-style
   nodejs
   openssh

@@ -35,6 +35,8 @@
 
   # TODO: find out a cleaner way to do that
   home.file = {
+    # borgmatic config
+    ".config/borgmatic/config.yaml".source = ./backup/borgmatic.yaml;
     # zelda sounds
     ".local/share/sounds/zelda/cucco.wav".source = ./sounds/zelda/cucco.wav;
     ".local/share/sounds/zelda/crystal.wav".source = ./sounds/zelda/crystal.wav;

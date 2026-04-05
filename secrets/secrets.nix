@@ -6,4 +6,16 @@ in
     publicKeys = [ macbook ];
     armor = true;
   };
+  "borg-passphrase.age" = {
+    publicKeys = [ macbook ];
+    armor = true;
+  };
+  "email.age" = {
+    publicKeys = [ macbook ];
+    armor = true;
+  };
+  "msmtp-config.age" = {
+    publicKeys = [ macbook ];
+    armor = true;
+  };
 }

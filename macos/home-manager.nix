@@ -37,10 +37,26 @@ in
     useGlobalPkgs = true;
     users.gustavo =
       { pkgs, lib, config, ... }:
+      let
+        backup = import ../common/backup.nix { inherit pkgs; };
+      in
       lib.recursiveUpdate common-hm-config {
+        # TODO: uncomment when vault is set up
+        # launchd.agents.vault-backup = {
+        #   enable = true;
+        #   config = {
+        #     ProgramArguments = [ "${backup.launchdWrapper}/bin/vault-launchd" ];
+        #     StartInterval = 14400; # every 4 hours
+        #     StandardOutPath = "/Users/gustavo/.local/share/vault-backup/launchd-stdout.log";
+        #     StandardErrorPath = "/Users/gustavo/.local/share/vault-backup/launchd-stderr.log";
+        #   };
+        # };
         age = {
           identityPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
           secrets.anthropic-api-key.file = ../secrets/anthropic-api-key.age;
+          secrets.borg-passphrase.file = ../secrets/borg-passphrase.age;
+          secrets.email.file = ../secrets/email.age;
+          secrets.msmtp-config.file = ../secrets/msmtp-config.age;
         };
         programs = {
           alacritty = {
@@ -51,7 +67,7 @@ in
           };
         };
         home.enableNixpkgsReleaseCheck = false;
-        home.packages = pkgs.callPackage ./packages.nix { };
+        home.packages = (pkgs.callPackage ./packages.nix { }) ++ [ backup.backupScript ];
         home.stateVersion = "22.11";
 
         targets.darwin.keybindings = {
